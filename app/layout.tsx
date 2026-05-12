@@ -1,30 +1,30 @@
-import type { Metadata } from 'next';
-import './globals.css';
-import MetaPixel from '../components/MetaPixel';
-import { Suspense } from 'react';
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import "./globals.css";
+import MetaPixel from "../components/MetaPixel";
+import { Suspense } from "react";
+
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'Impact School of AI | Master Artificial Intelligence',
-  description: 'Enroll in our premium AI course today and unlock 5 bonus courses absolutely FREE. Limited time offer!',
+  title: "Impact School Of AI",
+  description: "Empowering India Through Skills",
 };
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
-    <html lang="en">
-      <body className="antialiased selection:bg-[#00ffcc] selection:text-[#0f2d2a]">
-        {/* Suspense zaruri hai kyunki MetaPixel Next.js navigation hooks use karega */}
+    <html lang="en" className="scroll-smooth">
+      <body className={inter.className}>
+        {/* Meta Pixel ko Suspense ke andar rakha hai taaki build error na aaye */}
         <Suspense fallback={null}>
           <MetaPixel pixelId="727044806727599" />
         </Suspense>
         
-        {/* Yahan humara pura website render hoga */}
-        <main className="min-h-screen flex flex-col">
-          {children}
-        </main>
+        {children}
       </body>
     </html>
   );
