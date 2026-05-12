@@ -1,0 +1,71 @@
+@import "tailwindcss";
+
+
+@layer base {
+  :root {
+    /* Naya, rich dark background derived from image_448196.jpg */
+    --background: #020617;
+    /* Slate-950 */
+    --foreground: #e2e8f0;
+
+    /* Primary vibrant accents derived from image_448196.jpg */
+    --accent: #00ffcc;
+    /* Vibrant Cyan */
+    --accent-vibrant: #6366f1;
+    /* Indigo/Purple */
+    --accent-vibrant-light: #d946ef;
+    /* Magenta */
+    --accent-yellow: #f59e0b;
+    /* Amber */
+
+    /* Subtle glass overlay background */
+    --primary-bg: #0f172a;
+    /* Slate-900 */
+    --primary-border: #1e293b;
+    /* Slate-800 */
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: Arial, Helvetica, sans-serif;
+    overflow-x: hidden;
+  }
+}
+
+/* Custom utilities based on image_448196.jpg geometric/data feel */
+@layer utilities {
+  .hero-grid {
+    background-image:
+      radial-gradient(var(--accent-vibrant) 1px, transparent 1px),
+      radial-gradient(var(--accent) 1px, transparent 1px);
+    background-size: 40px 40px;
+    background-position: 0 0, 20px 20px;
+    opacity: 0.05;
+  }
+
+  .geometric-overlay {
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2300ffcc' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4v-4H4v4H0v2h4v4h2v-4h4v-2H6zM36 4v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    opacity: 0.1;
+  }
+
+  .text-glow-accent {
+    text-shadow: 0 0 10px rgba(0, 255, 204, 0.4);
+  }
+
+  .text-glow-vibrant {
+    text-shadow: 0 0 10px rgba(99, 102, 241, 0.4);
+  }
+
+  .button-glow-accent {
+    box-shadow: 0 0 20px rgba(0, 255, 204, 0.3);
+  }
+
+  .card-glow {
+    box-shadow: 0 0 30px rgba(99, 102, 241, 0.1);
+  }
+}
