@@ -16,7 +16,8 @@ const Offer = () => {
       value: 499,
       currency: 'INR'
     });
-    alert("Payment Gateway Triggered for ₹499!");
+    // Yahan alert hata kar direct Razorpay ka link laga diya hai
+    window.location.href = "https://rzp.io/rzp/impactschool";
   };
 
   useEffect(() => {

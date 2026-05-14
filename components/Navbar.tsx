@@ -15,7 +15,8 @@ const Navbar = () => {
 
   const handleEnroll = () => {
     trackMetaEvent('InitiateCheckout', { content_name: 'Navbar_Buy_Any_499' });
-    document.getElementById('pricing-section')?.scrollIntoView({ behavior: 'smooth' });
+    // Yahan scrollIntoView hata kar seedha Razorpay ka link laga diya hai
+    window.location.href = "https://rzp.io/rzp/impactschool";
     setIsOpen(false);
   };
 
@@ -27,7 +28,6 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // UPDATED: "Curriculum" ko "Courses" kar diya hai aur link "#courses" set kar diya hai.
   const navLinks = [
     { name: "Home", href: "#home" },
     { name: "Overview", href: "#overview" },
