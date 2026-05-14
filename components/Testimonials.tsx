@@ -1,167 +1,155 @@
 'use client';
 
-import React from "react";
-import { motion } from "framer-motion";
-import { Star, Quote, MessageCircle, ArrowRight } from "lucide-react";
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { MessageCircle, ArrowRight, ChevronDown, Sparkles } from "lucide-react";
 import { trackMetaEvent } from "../utils/trackEvent";
 
 const Testimonials = () => {
+  const [visibleCount, setVisibleCount] = useState(4);
+
   const handleEnroll = () => {
     trackMetaEvent('InitiateCheckout', { content_name: 'Testimonials_Enroll_499' });
     document.getElementById('pricing-section')?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const handleLoadMore = () => {
+    setVisibleCount(testimonials.length);
+  };
+
   const testimonials = [
-    {
-      id: "ZuqRDPrrcZc",
-      name: "Rohan S.",
-      role: "Freelance Editor",
-      quote:
-        "This course blew my mind. I made this entire scene in just two days! The AI tools explained here are game-changers.",
-      delay: 0.1,
-    },
-    {
-      id: "a1dbz39V0M0",
-      name: "Priya K.",
-      role: "YouTuber (100k+ Subs)",
-      quote:
-        "I'm a YouTuber and this course helped me 10x my content production. Worth every rupee for the time it saves!",
-      delay: 0.2,
-    },
-    {
-      id: "SFq8pGcoHa0",
-      name: "Ankit M.",
-      role: "Aspiring Filmmaker",
-      quote:
-        "Never thought I could be a filmmaker without a camera. AI makes it possible. Thank you for this amazing roadmap!",
-      delay: 0.3,
-    },
+    { id: "DWTq1bDgsF-", platform: "instagram" },
+    { id: "DTIhzsADAW9", platform: "instagram" },
+    { id: "DTQQLVTDKz8", platform: "instagram" },
+    { id: "DUUdDsvAQ-1", platform: "instagram" },
+    { id: "4gHqVg8SY2M", platform: "youtube" },
+    { id: "5toLxPmN3-4", platform: "youtube" },
+    { id: "DUmsnYPjDlN", platform: "instagram" },
+    { id: "DX1HriPz62D", platform: "instagram" },
   ];
 
   return (
     <section
       id="reviews"
-      className="min-h-0 pt-12 pb-10 md:pt-20 md:pb-16 bg-black relative overflow-hidden"
+      className="py-16 md:py-24 bg-black relative overflow-hidden"
     >
       {/* Background Ambience */}
-      <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-blue-900/10 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-purple-900/10 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-orange-900/10 rounded-full blur-[150px] pointer-events-none" />
+      <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-yellow-900/10 rounded-full blur-[150px] pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
+      <div className="max-w-[1200px] mx-auto px-4 md:px-6 relative z-10">
+        
+        {/* Header Section */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-8 md:mb-16"
+          className="text-center mb-10 md:mb-16"
         >
           <div className="flex items-center justify-center gap-2 mb-4">
-            <MessageCircle className="text-yellow-400" size={20} />
-            <span className="text-yellow-400 font-bold tracking-widest uppercase text-sm">
-              Student Success Stories
+            <span className="flex items-center gap-2 bg-yellow-500/10 border border-yellow-500/30 text-yellow-400 px-4 py-1.5 rounded-full text-xs md:text-sm font-bold tracking-widest uppercase shadow-[0_0_15px_rgba(234,179,8,0.2)]">
+              <MessageCircle size={16} /> Student Showcases
             </span>
           </div>
 
-          <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">
-            Student Showcase & <br className="hidden md:block" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">
-              Testimonials
+          <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
+            Real Results From <br className="hidden md:block" />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500">
+              Real Students
             </span>
           </h2>
-
-          <p className="text-slate-400 text-base md:text-lg max-w-2xl mx-auto">
-            See what our students are creating and saying about the course.
+          <p className="text-slate-400 text-sm md:text-lg max-w-2xl mx-auto px-2">
+            Watch our students transform their ideas into high-quality AI videos.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mb-10 md:mb-16">
-          {testimonials.map((item, index) => (
-            <TestimonialCard key={index} item={item} />
-          ))}
+        {/* Video Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 mb-8 md:mb-12">
+          <AnimatePresence>
+            {testimonials.slice(0, visibleCount).map((item, index) => (
+              <TestimonialCard key={index} item={item} index={index} />
+            ))}
+          </AnimatePresence>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          className="flex justify-center"
-        >
-          <button
+        {/* Load More & Enroll Buttons */}
+        <div className="flex flex-col items-center gap-6">
+          {visibleCount < testimonials.length && (
+            <motion.button
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              onClick={handleLoadMore}
+              className="flex items-center gap-2 px-6 py-3 rounded-full border border-yellow-500/30 text-yellow-400 font-medium hover:bg-yellow-500/10 transition-all cursor-pointer text-sm md:text-base"
+            >
+              Load More Videos <ChevronDown size={18} />
+            </motion.button>
+          )}
+
+          <motion.button
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
             onClick={handleEnroll}
-            className="group relative px-10 py-4 md:px-12 md:py-5 bg-white text-black rounded-full font-bold text-lg shadow-[0_0_40px_rgba(255,255,255,0.3)] hover:shadow-[0_0_60px_rgba(6,182,212,0.5)] hover:scale-105 transition-all duration-300 overflow-hidden cursor-pointer"
+            className="group relative px-8 md:px-12 py-4 md:py-5 bg-gradient-to-r from-yellow-500 to-orange-600 rounded-full font-bold text-white text-sm md:text-xl shadow-[0_0_40px_rgba(245,158,11,0.3)] hover:shadow-[0_0_60px_rgba(245,158,11,0.5)] hover:scale-105 active:scale-95 transition-all duration-300 overflow-hidden cursor-pointer uppercase tracking-wide flex items-center gap-3 w-full sm:w-auto justify-center mt-6"
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-cyan-200 via-white to-purple-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            <span className="relative flex items-center gap-3 uppercase tracking-wide">
-              Buy Any @ ₹499
-              <ArrowRight className="group-hover:translate-x-1 transition-transform" />
-            </span>
-          </button>
-        </motion.div>
+            Start Your Journey @ ₹499
+            <ArrowRight size={24} className="group-hover:translate-x-1 transition-transform" />
+          </motion.button>
+        </div>
+
       </div>
     </section>
   );
 };
 
-const TestimonialCard = ({ item }: { item: any }) => {
+// Extremely Minimal Card with Pro-Overlays
+const TestimonialCard = ({ item, index }: { item: any; index: number }) => {
+  // IG URL mein hidecaption=true add kiya hai
+  const embedUrl = item.platform === "instagram" 
+    ? `https://www.instagram.com/reel/${item.id}/embed/?hidecaption=true` 
+    : `https://www.youtube.com/embed/${item.id}?rel=0&modestbranding=1&controls=1&showinfo=0&playsinline=1`;
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: item.delay, duration: 0.5 }}
-      className="group flex flex-col h-full bg-slate-900/40 border border-slate-800 rounded-2xl overflow-hidden hover:border-yellow-500/30 hover:shadow-[0_0_30px_rgba(234,179,8,0.1)] transition-all duration-300"
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.9 }}
+      transition={{ duration: 0.4, delay: index * 0.05 }}
+      className="relative w-full pt-[177%] bg-slate-900 border border-slate-800 rounded-xl md:rounded-2xl overflow-hidden hover:border-yellow-500/50 hover:shadow-[0_0_30px_rgba(234,179,8,0.15)] transition-all duration-300 group"
     >
-      <div className="relative aspect-video w-full bg-black">
-        <iframe
-          className="w-full h-full object-cover"
-          src={`https://www.youtube.com/embed/${item.id}?rel=0&modestbranding=1&controls=1&showinfo=0&disablekb=1&iv_load_policy=3`}
-          title={`Student Project by ${item.name}`}
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-        ></iframe>
+      {/* Video Iframe */}
+      <iframe
+        className="absolute top-0 left-0 w-full h-full"
+        src={embedUrl}
+        title="Student Showcase"
+        frameBorder="0"
+        scrolling="no"
+        allowTransparency={true}
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+      ></iframe>
 
-        <div
-          className="absolute top-0 right-0 w-[140px] h-[60px] z-20 bg-transparent cursor-default"
-          onClick={(e) => e.stopPropagation()}
-        />
-        <div
-          className="absolute top-0 left-0 w-[180px] h-[60px] z-20 bg-transparent cursor-default"
-          onClick={(e) => e.stopPropagation()}
-        />
+      {/* PRO TRICK: SOLID TOP BAR TO HIDE CREATOR ID & YT TITLES */}
+      <div 
+        className="absolute top-0 left-0 w-full h-[65px] bg-[#1a1a1a] z-10 border-b border-slate-800 flex items-center justify-center cursor-default pointer-events-none"
+      >
+         <span className="text-xs text-slate-500 font-medium tracking-widest uppercase flex items-center gap-1.5">
+            <Sparkles size={12} className="text-yellow-500" /> Student Demo
+         </span>
       </div>
 
-      <div className="p-5 md:p-6 flex flex-col flex-grow relative">
-        <Quote
-          className="absolute top-6 right-6 text-slate-700/50 fill-current opacity-20"
-          size={32}
+      {/* PRO TRICK: SOLID BOTTOM BAR TO HIDE "VIEW ON INSTAGRAM" */}
+      {/* (YouTube par bottom bar nahi chahiye warna seekbar block ho jayega) */}
+      {item.platform === "instagram" && (
+        <div 
+          className="absolute bottom-0 left-0 w-full h-[45px] bg-[#1a1a1a] z-10 border-t border-slate-800 cursor-default pointer-events-none"
         />
+      )}
 
-        <div className="flex gap-1 mb-3">
-          {[...Array(5)].map((_, i) => (
-            <Star
-              key={i}
-              size={14}
-              className="text-yellow-400 fill-yellow-400"
-            />
-          ))}
-        </div>
-
-        <p className="text-slate-300 text-sm leading-relaxed mb-4 italic relative z-10">
-          "{item.quote}"
-        </p>
-
-        <div className="mt-auto flex items-center gap-3 pt-4 border-t border-slate-800">
-          <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center text-black font-bold text-base md:text-lg">
-            {item.name.charAt(0)}
-          </div>
-          <div>
-            <h4 className="text-white font-bold text-sm">{item.name}</h4>
-            <span className="text-[10px] md:text-xs text-slate-500">
-              {item.role}
-            </span>
-          </div>
-        </div>
-      </div>
+      {/* Scroll Shields for Mobile */}
+      <div className="absolute inset-y-0 left-0 w-4 z-20 bg-transparent" />
+      <div className="absolute inset-y-0 right-0 w-4 z-20 bg-transparent" />
     </motion.div>
   );
 };

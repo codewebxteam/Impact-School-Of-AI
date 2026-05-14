@@ -30,7 +30,8 @@ const Hero = () => {
           className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-slate-800 bg-slate-900/50 backdrop-blur-md text-cyan-400 text-sm font-semibold mb-6 hover:border-cyan-500/50 transition-colors cursor-default shadow-lg shadow-cyan-900/10"
         >
           <Sparkles size={16} />
-          <span>Limited Time Offer: Buy Any Course and get all Courses FREE</span>
+          <span>Buy 1 Course at ₹499 & Get 12+ AI Courses Absolutely FREE
+</span>
         </motion.div>
 
         {/* Main Heading */}
@@ -40,9 +41,10 @@ const Hero = () => {
           transition={{ duration: 0.5, delay: 0.1 }}
           className="text-5xl md:text-7xl lg:text-8xl font-bold text-white tracking-tight mb-4 leading-[1.1]"
         >
-          Master AI & <br className="hidden md:block" />
+          Master AI Content Creation & <br className="hidden md:block" />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600">
-            Dominate The Future
+            Building Your Online Income 
+
           </span>
         </motion.h1>
 
@@ -53,7 +55,7 @@ const Hero = () => {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="text-lg md:text-xl text-slate-400 mb-8 max-w-3xl mx-auto leading-relaxed"
         >
-          Zero coding required. Build AI apps, automate your daily workflow, and start getting high-paying clients today. Choose any one course to unlock the entire ecosystem.
+          Learn how to create AI influencers, baby podcasts, viral reels, funny AI videos, business promotional ads, cinematic content, and motivational videos using powerful AI tools — without coding or editing experience. 
         </motion.p>
 
         {/* CTA Area */}

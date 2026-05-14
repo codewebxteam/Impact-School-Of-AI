@@ -37,7 +37,7 @@ const IntroSection = () => {
     },
     {
       icon: Calendar,
-      title: "Make Your First Film in 7 Days",
+      title: "Make Your First Videos In Just 3 Days",
       desc: "Our structured path takes you from concept to a finished short film in just one week.",
       color: "text-pink-400",
       delay: 0.4,

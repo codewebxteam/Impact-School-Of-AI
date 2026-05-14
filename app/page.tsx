@@ -25,7 +25,6 @@ export default function Home() {
       
       <LearningPath />
       <ProjectsShowcase />
-      <Transformation />
       <Testimonials />
       <Reviews />
       <FAQ />
