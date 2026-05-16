@@ -10,7 +10,8 @@ const Testimonials = () => {
 
   const handleEnroll = () => {
     trackMetaEvent('InitiateCheckout', { content_name: 'Testimonials_Enroll_499' });
-    document.getElementById('pricing-section')?.scrollIntoView({ behavior: 'smooth' });
+    // Direct Razorpay payment link
+    window.location.href = "https://rzp.io/rzp/impactschool";
   };
 
   const handleLoadMore = () => {
@@ -31,7 +32,8 @@ const Testimonials = () => {
   return (
     <section
       id="reviews"
-      className="py-16 md:py-24 bg-black relative overflow-hidden"
+      // Padding Reduce kardi: Phone me 1/3 (py-6) aur Laptop me 1/2 (md:py-12)
+      className="py-6 md:py-12 bg-black relative overflow-hidden"
     >
       {/* Background Ambience */}
       <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-orange-900/10 rounded-full blur-[150px] pointer-events-none" />
@@ -45,27 +47,27 @@ const Testimonials = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-10 md:mb-16"
+          className="text-center mb-8 md:mb-12"
         >
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <span className="flex items-center gap-2 bg-yellow-500/10 border border-yellow-500/30 text-yellow-400 px-4 py-1.5 rounded-full text-xs md:text-sm font-bold tracking-widest uppercase shadow-[0_0_15px_rgba(234,179,8,0.2)]">
-              <MessageCircle size={16} /> Student Showcases
+          <div className="flex items-center justify-center gap-2 mb-3">
+            <span className="flex items-center gap-2 bg-yellow-500/10 border border-yellow-500/30 text-yellow-400 px-3 py-1 rounded-full text-xs font-bold tracking-widest uppercase shadow-[0_0_15px_rgba(234,179,8,0.2)]">
+              <MessageCircle size={14} /> Student Showcases
             </span>
           </div>
 
-          <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
+          <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight">
             Real Results From <br className="hidden md:block" />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500">
               Real Students
             </span>
           </h2>
-          <p className="text-slate-400 text-sm md:text-lg max-w-2xl mx-auto px-2">
+          <p className="text-slate-400 text-xs md:text-base max-w-2xl mx-auto px-2">
             Watch our students transform their ideas into high-quality AI videos.
           </p>
         </motion.div>
 
         {/* Video Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 mb-8 md:mb-12">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-5 mb-8 md:mb-10">
           <AnimatePresence>
             {testimonials.slice(0, visibleCount).map((item, index) => (
               <TestimonialCard key={index} item={item} index={index} />
@@ -74,15 +76,15 @@ const Testimonials = () => {
         </div>
 
         {/* Load More & Enroll Buttons */}
-        <div className="flex flex-col items-center gap-6">
+        <div className="flex flex-col items-center gap-5">
           {visibleCount < testimonials.length && (
             <motion.button
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               onClick={handleLoadMore}
-              className="flex items-center gap-2 px-6 py-3 rounded-full border border-yellow-500/30 text-yellow-400 font-medium hover:bg-yellow-500/10 transition-all cursor-pointer text-sm md:text-base"
+              className="flex items-center gap-2 px-5 py-2.5 rounded-full border border-yellow-500/30 text-yellow-400 font-medium hover:bg-yellow-500/10 transition-all cursor-pointer text-sm"
             >
-              Load More Videos <ChevronDown size={18} />
+              Load More Videos <ChevronDown size={16} />
             </motion.button>
           )}
 
@@ -91,10 +93,10 @@ const Testimonials = () => {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             onClick={handleEnroll}
-            className="group relative px-8 md:px-12 py-4 md:py-5 bg-gradient-to-r from-yellow-500 to-orange-600 rounded-full font-bold text-white text-sm md:text-xl shadow-[0_0_40px_rgba(245,158,11,0.3)] hover:shadow-[0_0_60px_rgba(245,158,11,0.5)] hover:scale-105 active:scale-95 transition-all duration-300 overflow-hidden cursor-pointer uppercase tracking-wide flex items-center gap-3 w-full sm:w-auto justify-center mt-6"
+            className="group relative px-8 md:px-12 py-4 md:py-5 bg-gradient-to-r from-yellow-500 to-orange-600 rounded-full font-bold text-white text-sm md:text-xl shadow-[0_0_40px_rgba(245,158,11,0.3)] hover:shadow-[0_0_60px_rgba(245,158,11,0.5)] hover:scale-105 active:scale-95 transition-all duration-300 overflow-hidden cursor-pointer uppercase tracking-wide flex items-center gap-3 w-full sm:w-auto justify-center mt-4"
           >
             Start Your Journey @ ₹499
-            <ArrowRight size={24} className="group-hover:translate-x-1 transition-transform" />
+            <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
           </motion.button>
         </div>
 
@@ -134,7 +136,7 @@ const TestimonialCard = ({ item, index }: { item: any; index: number }) => {
       <div 
         className="absolute top-0 left-0 w-full h-[65px] bg-[#1a1a1a] z-10 border-b border-slate-800 flex items-center justify-center cursor-default pointer-events-none"
       >
-         <span className="text-xs text-slate-500 font-medium tracking-widest uppercase flex items-center gap-1.5">
+         <span className="text-[10px] md:text-xs text-slate-500 font-medium tracking-widest uppercase flex items-center gap-1.5">
             <Sparkles size={12} className="text-yellow-500" /> Student Demo
          </span>
       </div>

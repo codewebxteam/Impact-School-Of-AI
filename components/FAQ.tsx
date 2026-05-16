@@ -8,7 +8,8 @@ import { trackMetaEvent } from "../utils/trackEvent";
 const FAQ = () => {
   const handleEnroll = () => {
     trackMetaEvent('InitiateCheckout', { content_name: 'FAQ_Enroll_499' });
-    document.getElementById('pricing-section')?.scrollIntoView({ behavior: 'smooth' });
+    // Yahan direct Razorpay payment link add kar diya hai
+    window.location.href = "https://rzp.io/rzp/impactschool";
   };
 
   const faqs = [
@@ -58,7 +59,8 @@ const FAQ = () => {
   return (
     <section
       id="faq"
-      className="py-16 md:py-24 bg-black relative overflow-hidden"
+      // Padding Reduce kardi: Phone me py-8 aur Laptop me md:py-12
+      className="py-8 md:py-12 bg-black relative overflow-hidden"
     >
       {/* Background Ambience */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-cyan-900/10 rounded-full blur-[150px] pointer-events-none" />

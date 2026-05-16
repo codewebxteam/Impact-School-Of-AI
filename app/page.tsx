@@ -17,8 +17,7 @@ export default function Home() {
     <main className="bg-black min-h-screen text-slate-200 selection:bg-cyan-500/30 selection:text-cyan-100 font-sans overflow-x-hidden">
       <Navbar />
       <Hero />
-      <IntroSection />
-      <WhoIsFor />
+     <WhoIsFor />
       
       {/* Yahan naya Courses section add kar diya hai */}
       <Courses /> 

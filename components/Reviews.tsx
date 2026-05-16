@@ -8,7 +8,8 @@ import { trackMetaEvent } from "../utils/trackEvent";
 const Reviews = () => {
   const handleEnroll = () => {
     trackMetaEvent('InitiateCheckout', { content_name: 'Reviews_Enroll_499' });
-    document.getElementById('pricing-section')?.scrollIntoView({ behavior: 'smooth' });
+    // Yahan direct Razorpay payment link add kar diya hai
+    window.location.href = "https://rzp.io/rzp/impactschool";
   };
 
   const reviews = [
@@ -52,7 +53,8 @@ const Reviews = () => {
   return (
     <section
       id="reviews"
-      className="py-16 md:py-24 bg-black relative overflow-hidden"
+      // Padding Reduce kardi: Phone me 1/3 (py-8) aur Laptop me 1/2 (md:py-14)
+      className="py-8 md:py-14 bg-black relative overflow-hidden"
     >
       {/* Background Ambience */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[500px] bg-cyan-900/10 rounded-full blur-[120px] pointer-events-none" />
@@ -63,29 +65,29 @@ const Reviews = () => {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12 md:mb-20"
+          transition={{ duration: 0.5 }}
+          className="text-center mb-10 md:mb-14"
         >
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <span className="flex items-center gap-2 bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 px-4 py-1.5 rounded-full text-xs md:text-sm font-bold tracking-widest uppercase shadow-[0_0_15px_rgba(6,182,212,0.2)]">
-              <Sparkles size={16} /> Community Love
+          <div className="flex items-center justify-center gap-2 mb-3">
+            <span className="flex items-center gap-2 bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 px-3 py-1 rounded-full text-xs font-bold tracking-widest uppercase shadow-[0_0_15px_rgba(6,182,212,0.2)]">
+              <Sparkles size={14} /> Community Love
             </span>
           </div>
-          <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
+          <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight">
             What Our Students Are <br className="hidden md:block" />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">
               Saying
             </span>
           </h2>
-          <p className="text-slate-400 text-sm md:text-lg max-w-2xl mx-auto px-2">
+          <p className="text-slate-400 text-xs md:text-base max-w-2xl mx-auto px-2">
             Thousands of creators are already upgrading their skills with our AI bundles. Read their real experiences.
           </p>
         </motion.div>
 
         {/* Reviews Grid (Flexbox for perfect centering of 5 items) */}
-        <div className="flex flex-wrap justify-center gap-4 md:gap-8 mb-12 md:mb-16">
+        <div className="flex flex-wrap justify-center gap-4 md:gap-6 mb-10 md:mb-12">
           {reviews.map((item, index) => (
-            <div key={index} className="w-full sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.5rem)]">
+            <div key={index} className="w-full sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1rem)]">
               <ReviewCard item={item} index={index} />
             </div>
           ))}
@@ -100,10 +102,10 @@ const Reviews = () => {
         >
           <button
             onClick={handleEnroll}
-            className="group relative px-8 md:px-12 py-4 md:py-5 bg-gradient-to-r from-cyan-600 to-blue-600 rounded-full font-bold text-white text-base md:text-xl shadow-[0_0_40px_rgba(6,182,212,0.3)] hover:shadow-[0_0_60px_rgba(6,182,212,0.5)] hover:scale-105 active:scale-95 transition-all duration-300 overflow-hidden cursor-pointer uppercase tracking-wide flex items-center gap-3"
+            className="group relative px-8 md:px-12 py-4 md:py-5 bg-gradient-to-r from-cyan-600 to-blue-600 rounded-full font-bold text-white text-sm md:text-xl shadow-[0_0_40px_rgba(6,182,212,0.3)] hover:shadow-[0_0_60px_rgba(6,182,212,0.5)] hover:scale-105 active:scale-95 transition-all duration-300 overflow-hidden cursor-pointer uppercase tracking-wide flex items-center gap-3 w-full sm:w-auto justify-center"
           >
             Start Your Journey @ ₹499
-            <ArrowRight size={24} className="group-hover:translate-x-1 transition-transform" />
+            <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
           </button>
         </motion.div>
       </div>
@@ -118,32 +120,32 @@ const ReviewCard = ({ item, index }: { item: any; index: number }) => {
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ delay: index * 0.1, duration: 0.5 }}
-      className="relative flex flex-col h-full p-6 md:p-8 rounded-3xl bg-slate-900/50 border border-slate-800 backdrop-blur-sm hover:-translate-y-2 hover:border-cyan-500/50 hover:shadow-2xl hover:shadow-cyan-500/10 transition-all duration-300 group"
+      transition={{ delay: index * 0.1, duration: 0.4 }}
+      className="relative flex flex-col h-full p-5 md:p-6 rounded-2xl bg-slate-900/50 border border-slate-800 backdrop-blur-sm hover:-translate-y-1.5 hover:border-cyan-500/50 hover:shadow-xl hover:shadow-cyan-500/10 transition-all duration-300 group"
     >
       <Quote
-        className="absolute top-6 right-6 text-slate-800 group-hover:text-cyan-900/40 transition-colors duration-300 w-12 h-12 md:w-16 md:h-16 z-0"
+        className="absolute top-5 right-5 text-slate-800 group-hover:text-cyan-900/40 transition-colors duration-300 w-10 h-10 md:w-14 md:h-14 z-0"
       />
-      <div className="flex gap-1 mb-5 md:mb-6 relative z-10">
+      <div className="flex gap-1 mb-4 md:mb-5 relative z-10">
         {[...Array(item.stars)].map((_, i) => (
-          <Star key={i} size={16} className="text-yellow-400 fill-yellow-400 drop-shadow-[0_0_5px_rgba(250,204,21,0.5)]" />
+          <Star key={i} size={14} className="text-yellow-400 fill-yellow-400 drop-shadow-[0_0_5px_rgba(250,204,21,0.5)]" />
         ))}
       </div>
-      <p className="text-slate-300 text-sm md:text-base leading-relaxed mb-8 relative z-10 font-medium flex-grow italic">
+      <p className="text-slate-300 text-sm md:text-base leading-relaxed mb-6 relative z-10 font-medium flex-grow italic">
         "{item.review}"
       </p>
       
-      <div className="flex items-center gap-4 border-t border-slate-800/80 pt-5 md:pt-6 relative z-10 mt-auto">
+      <div className="flex items-center gap-3 border-t border-slate-800/80 pt-4 md:pt-5 relative z-10 mt-auto">
         <div
-          className={`w-12 h-12 rounded-full bg-gradient-to-br ${item.gradient} flex items-center justify-center text-white font-bold text-xl shadow-lg shrink-0`}
+          className={`w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br ${item.gradient} flex items-center justify-center text-white font-bold text-lg md:text-xl shadow-lg shrink-0`}
         >
           {item.initial}
         </div>
         <div>
-          <h4 className="text-white font-bold text-sm md:text-base group-hover:text-cyan-400 transition-colors">
+          <h4 className="text-white font-bold text-sm group-hover:text-cyan-400 transition-colors">
             {item.name}
           </h4>
-          <div className="flex items-center gap-1.5 text-xs text-green-400 mt-1 font-medium bg-green-500/10 px-2 py-0.5 rounded-md w-fit">
+          <div className="flex items-center gap-1.5 text-[10px] md:text-xs text-green-400 mt-1 font-medium bg-green-500/10 px-2 py-0.5 rounded-md w-fit">
             <CheckCircle2 size={12} className="shrink-0" />
             Verified Student
           </div>
