@@ -14,9 +14,9 @@ const FAQ = () => {
 
   const faqs = [
     {
-      question: "Do I get all 13+ AI courses at ₹499?",
+      question: "Do I get all 12+ AI courses at ₹499?",
       answer:
-        "Yes! Buy any one course at ₹499 and unlock access to all 13+ premium AI courses absolutely FREE. It's a one-time payment for the entire Mega Bundle.",
+        "Yes! Buy any one course at ₹499 and unlock access to all 12+ premium AI courses absolutely FREE. It's a one-time payment for the entire Mega Bundle.",
     },
     {
       question: "Can beginners join these AI courses?",
@@ -118,7 +118,7 @@ const FAQ = () => {
             Ready to start creating?
           </h3>
           <p className="text-slate-400 mb-8 text-sm md:text-base max-w-md">
-            Join thousands of other students and get instant access to all 13+ courses today.
+            Join thousands of other students and get instant access to all 12+ courses today.
           </p>
           <button
             onClick={handleEnroll}

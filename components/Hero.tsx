@@ -74,7 +74,7 @@ const Hero = () => {
               className="absolute top-0 left-0 w-full h-[55px] md:h-[65px] bg-black z-20 flex items-center justify-center cursor-default pointer-events-none"
             >
               <span className="text-[10px] text-slate-400 font-bold tracking-widest uppercase flex items-center gap-1.5 border border-slate-700/50 bg-slate-900/50 px-3 py-1 rounded-full">
-                <PlayCircle size={12} className="text-cyan-400" /> Course Preview
+                <PlayCircle size={22} className="text-white" /> Course Introduction
               </span>
             </div>
             
