@@ -186,7 +186,6 @@ const TestimonialCard = ({ item, index }: { item: any; index: number }) => {
          </div>
       </div>
 
-      <div className="absolute inset-y-[100px] inset-x-8 z-20 bg-transparent cursor-pointer" title="Click to Play/Pause" />
     </motion.div>
   );
 };
