@@ -1,10 +1,9 @@
 'use client';
 
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React from "react";
+import { motion } from "framer-motion";
 import { 
   Film, 
-  ChevronDown, 
   User, 
   Heart, 
   Coffee, 
@@ -15,36 +14,18 @@ import {
   Activity, 
   Utensils,
   Play,
-  Sparkles,
-  CheckCircle2
+  Sparkles
 } from "lucide-react";
 
 const ProjectsShowcase = () => {
-  const [visibleCount, setVisibleCount] = useState(4); // Desktop grid ke hisab se 4 videos set kiye
-
-  const handleLoadMore = () => {
-    const currentCount = visibleCount;
-    const nextCount = Math.min(visibleCount + 4, projects.length);
-    
-    setVisibleCount(nextCount);
-
-    // Auto-scroll logic taaki naye load hue courses pe focus jaye
-    setTimeout(() => {
-      const element = document.getElementById(`project-card-${currentCount}`);
-      if (element) {
-        const y = element.getBoundingClientRect().top + window.scrollY - 100;
-        window.scrollTo({ top: y, behavior: 'smooth' });
-      }
-    }, 150);
-  };
 
   const projects = [
     { id: "DXv2fPvpa__", platform: "instagram", type: "Talking Food Ad", icon: User, color: "from-cyan-400 to-blue-500", views: "1.2M" },
-    { id: "DUQojqujOJx", platform: "instagram", type: "AI Influncer", icon: Heart, color: "from-pink-400 to-rose-500", views: "850K" },
-    { id: "DUONAqlkm8S", platform: "instagram", type: "AI Influncer", icon: Coffee, color: "from-orange-400 to-amber-500", views: "2.1M" },
+    { id: "DUQojqujOJx", platform: "instagram", type: "AI Influencer", icon: Heart, color: "from-pink-400 to-rose-500", views: "850K" },
+    { id: "DUONAqlkm8S", platform: "instagram", type: "AI Influencer", icon: Coffee, color: "from-orange-400 to-amber-500", views: "2.1M" },
     { id: "DWYGeuFSZyo", platform: "instagram", type: "Cinematic Scene", icon: Film, color: "from-purple-400 to-indigo-500", views: "3.4M" },
     { id: "DWTq1bDgsF-", platform: "instagram", type: "Talking Baby", icon: Zap, color: "from-yellow-400 to-orange-500", views: "920K" },
-    { id: "DTIhzsADAW9", platform: "instagram", type: "AI Influncer", icon: Wand2, color: "from-fuchsia-400 to-purple-500", views: "1.5M" },
+    { id: "DTIhzsADAW9", platform: "instagram", type: "AI Influencer", icon: Wand2, color: "from-fuchsia-400 to-purple-500", views: "1.5M" },
     { id: "4gHqVg8SY2M", platform: "youtube", type: "Junk Food AI", icon: Megaphone, color: "from-teal-400 to-emerald-500", views: "500K" },
     { id: "5toLxPmN3-4", platform: "youtube", type: "Cartoon Video", icon: Mic, color: "from-rose-400 to-red-500", views: "2.8M" },
     { id: "DUmsnYPjDlN", platform: "instagram", type: "Junk Food Video", icon: Activity, color: "from-emerald-400 to-cyan-500", views: "1.1M" },
@@ -69,7 +50,7 @@ const ProjectsShowcase = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12 md:mb-16"
+          className="text-center mb-10 md:mb-16"
         >
           <div className="flex items-center justify-center gap-2 mb-4">
             <span className="flex items-center gap-2 bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 px-4 py-1.5 rounded-full text-xs font-bold tracking-widest uppercase shadow-[0_0_20px_rgba(6,182,212,0.2)]">
@@ -90,35 +71,15 @@ const ProjectsShowcase = () => {
         </motion.div>
 
         {/* ========================================================= */}
-        {/* RESPONSIVE GRID: Phone me 1 column, Laptop me 4 columns */}
+        {/* RESPONSIVE GRID: Phone me 2 column, Laptop me 5 columns */}
+        {/* (10 videos hain toh 5 columns me perfect 2 rows banengi) */}
         {/* ========================================================= */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-6 mb-12 md:mb-16 place-items-center">
-          <AnimatePresence>
-            {projects.slice(0, visibleCount).map((project, index) => (
-              <ProjectCard key={project.id} project={project} index={index} />
-            ))}
-          </AnimatePresence>
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-6 mb-8 place-items-center">
+          {projects.map((project, index) => (
+            <ProjectCard key={project.id} project={project} index={index} />
+          ))}
         </div>
 
-        {/* Dynamic Load More Button */}
-        <div className="flex justify-center pb-4 md:pb-8">
-          {visibleCount < projects.length ? (
-            <motion.button
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              onClick={handleLoadMore}
-              className="group flex items-center gap-3 px-8 py-4 md:px-10 md:py-4 rounded-full border border-cyan-500/30 bg-slate-900/80 backdrop-blur-md text-cyan-400 font-bold hover:bg-cyan-500 hover:text-white transition-all duration-300 cursor-pointer text-sm md:text-lg shadow-[0_0_30px_rgba(6,182,212,0.15)] hover:shadow-[0_0_40px_rgba(6,182,212,0.4)]"
-            >
-              Load More Masterpieces 
-              <ChevronDown size={22} className="group-hover:translate-y-1 transition-transform" />
-            </motion.button>
-          ) : (
-            <div className="flex items-center gap-2 text-slate-500 font-medium text-sm">
-               <CheckCircle2 size={16} className="text-cyan-500" />
-               You've seen all the demos. Time to create your own!
-            </div>
-          )}
-        </div>
       </div>
     </section>
   );
@@ -133,20 +94,20 @@ const ProjectCard = ({ project, index }: { project: any; index: number }) => {
   return (
     <motion.div
       id={`project-card-${index}`}
-      initial={{ opacity: 0, scale: 0.9, y: 40 }}
+      initial={{ opacity: 0, scale: 0.9, y: 30 }}
       whileInView={{ opacity: 1, scale: 1, y: 0 }}
       viewport={{ once: true, margin: "-100px" }}
-      transition={{ duration: 0.6 }}
-      // Phone par size control karega, Laptop grid me automatically fit ho jayega
-      className="relative w-full max-w-[320px] lg:max-w-full aspect-[9/16] bg-black border-[4px] md:border-[5px] border-[#121212] rounded-[2rem] md:rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.8)] hover:shadow-[0_0_60px_rgba(6,182,212,0.2)] hover:border-[#1a1a1a] transition-all duration-500 group overflow-hidden ring-1 ring-white/5"
+      transition={{ duration: 0.5, delay: (index % 5) * 0.1 }}
+      // Phone par 2 grid hone ki wajah se styles responsive (chote) kiye gaye hain
+      className="relative w-full aspect-[9/16] bg-black border-[2px] md:border-[5px] border-[#121212] rounded-[1.25rem] md:rounded-[2.5rem] shadow-[0_10px_30px_rgba(0,0,0,0.8)] md:shadow-[0_20px_50px_rgba(0,0,0,0.8)] hover:shadow-[0_0_40px_rgba(6,182,212,0.2)] hover:border-[#1a1a1a] transition-all duration-500 group overflow-hidden ring-1 ring-white/5"
     >
       {/* Background neon glow behind the phone frame */}
-      <div className={`absolute -inset-10 bg-gradient-to-r ${project.color} opacity-0 group-hover:opacity-20 blur-3xl -z-10 transition-opacity duration-700`} />
+      <div className={`absolute -inset-10 bg-gradient-to-r ${project.color} opacity-0 group-hover:opacity-20 blur-2xl md:blur-3xl -z-10 transition-opacity duration-700`} />
 
       {/* ============================================================== */}
       {/* CSS CROP TRICK: Hides Instagram Like/Comment buttons completely */}
       {/* ============================================================== */}
-      <div className="absolute inset-0 bg-[#0a0a0a] overflow-hidden rounded-[1.75rem] md:rounded-[2.2rem]">
+      <div className="absolute inset-0 bg-[#0a0a0a] overflow-hidden rounded-[1rem] md:rounded-[2.2rem]">
         <iframe
           className={`absolute top-0 ${project.platform === 'instagram' ? '-left-[20%] w-[140%]' : 'left-0 w-full'} h-full`}
           src={embedUrl}
@@ -159,7 +120,7 @@ const ProjectCard = ({ project, index }: { project: any; index: number }) => {
         ></iframe>
 
         {/* Inner shadow to blend the video edges seamlessly */}
-        <div className="absolute inset-0 shadow-[inset_0_0_40px_rgba(0,0,0,0.8)] pointer-events-none z-10" />
+        <div className="absolute inset-0 shadow-[inset_0_0_20px_rgba(0,0,0,0.8)] md:shadow-[inset_0_0_40px_rgba(0,0,0,0.8)] pointer-events-none z-10" />
       </div>
 
       {/* ============================================================== */}
@@ -167,41 +128,42 @@ const ProjectCard = ({ project, index }: { project: any; index: number }) => {
       {/* ============================================================== */}
 
       {/* Fake Top Header */}
-      <div className="absolute top-0 left-0 w-full pt-4 pb-6 px-4 bg-gradient-to-b from-black/90 via-black/60 to-transparent z-20 flex items-start justify-between pointer-events-none">
-         <div className="flex items-center gap-3">
-            <div className={`w-8 h-8 md:w-10 md:h-10 rounded-full bg-gradient-to-br ${project.color} flex items-center justify-center shadow-lg p-[2px]`}>
+      <div className="absolute top-0 left-0 w-full pt-2 pb-4 px-2 md:pt-4 md:pb-6 md:px-4 bg-gradient-to-b from-black/90 via-black/60 to-transparent z-20 flex items-start justify-between pointer-events-none">
+         <div className="flex items-center gap-1.5 md:gap-3">
+            <div className={`w-6 h-6 md:w-10 md:h-10 rounded-full bg-gradient-to-br ${project.color} flex items-center justify-center shadow-lg p-[1px] md:p-[2px]`}>
                <div className="w-full h-full bg-black/50 rounded-full flex items-center justify-center backdrop-blur-sm">
-                  <project.icon size={16} className="text-white drop-shadow-md" />
+                  {/* Icon size responsive for phone/laptop */}
+                  <project.icon className="w-3 h-3 md:w-4 md:h-4 text-white drop-shadow-md" />
                </div>
             </div>
             <div className="flex flex-col">
-               <span className="text-xs md:text-sm font-bold text-white tracking-wide drop-shadow-md">
+               <span className="text-[9px] md:text-sm font-bold text-white tracking-wide drop-shadow-md whitespace-nowrap">
                  {project.type}
                </span>
-               <span className="text-[9px] md:text-[10px] text-cyan-400 font-bold uppercase tracking-widest flex items-center gap-1 mt-0.5 drop-shadow-md">
-                 <Sparkles size={10} /> AI Generated
+               <span className="text-[6px] md:text-[10px] text-cyan-400 font-bold uppercase tracking-widest flex items-center gap-0.5 md:gap-1 mt-[1px] md:mt-0.5 drop-shadow-md">
+                 <Sparkles className="w-2 h-2 md:w-3 md:h-3" /> AI Generated
                </span>
             </div>
          </div>
       </div>
 
       {/* Fake Bottom Footer */}
-      <div className="absolute bottom-0 left-0 w-full h-[80px] md:h-[100px] bg-gradient-to-t from-black via-black/80 to-transparent z-20 flex flex-col justify-end px-4 pb-4 pointer-events-none">
-         <div className="flex items-center justify-between w-full mb-3">
-            <div className="flex items-center gap-4">
-               <div className="flex items-center gap-1.5 text-white/90 drop-shadow-md">
-                  <Play size={14} className="fill-white/20" />
-                  <span className="text-[10px] md:text-xs font-bold">{project.views}</span>
+      <div className="absolute bottom-0 left-0 w-full h-[50px] md:h-[100px] bg-gradient-to-t from-black via-black/80 to-transparent z-20 flex flex-col justify-end px-2 pb-2 md:px-4 md:pb-4 pointer-events-none">
+         <div className="flex items-center justify-between w-full mb-2 md:mb-3">
+            <div className="flex items-center gap-2 md:gap-4">
+               <div className="flex items-center gap-1 md:gap-1.5 text-white/90 drop-shadow-md">
+                  <Play className="w-2.5 h-2.5 md:w-3.5 md:h-3.5 fill-white/20" />
+                  <span className="text-[8px] md:text-xs font-bold">{project.views}</span>
                </div>
-               <div className="flex items-center gap-1.5 text-white/90 drop-shadow-md">
-                  <Heart size={14} className="text-red-500 fill-red-500" />
-                  <span className="text-[10px] md:text-xs font-bold">Viral</span>
+               <div className="flex items-center gap-1 md:gap-1.5 text-white/90 drop-shadow-md">
+                  <Heart className="w-2.5 h-2.5 md:w-3.5 md:h-3.5 text-red-500 fill-red-500" />
+                  <span className="text-[8px] md:text-xs font-bold">Viral</span>
                </div>
             </div>
          </div>
 
          {/* Fake Video Progress Bar */}
-         <div className="w-full h-1 bg-white/20 rounded-full overflow-hidden flex">
+         <div className="w-full h-[2px] md:h-1 bg-white/20 rounded-full overflow-hidden flex">
             <motion.div 
                initial={{ width: "0%" }}
                whileInView={{ width: "100%" }}
