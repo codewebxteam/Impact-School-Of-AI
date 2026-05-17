@@ -211,9 +211,6 @@ const ProjectCard = ({ project, index }: { project: any; index: number }) => {
          </div>
       </div>
 
-      {/* Interactive Play Catcher */}
-      <div className="absolute inset-y-[100px] inset-x-8 z-20 bg-transparent cursor-pointer" title="Click to Play/Pause" />
-
     </motion.div>
   );
 };
