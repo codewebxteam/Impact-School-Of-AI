@@ -6,26 +6,13 @@ import {
   Sparkles, 
   ArrowRight, 
   CheckCircle2, 
-  Video, 
-  PenTool, 
-  Box, 
-  Utensils, 
-  Heart, 
-  Star, 
-  Coffee, 
-  Camera, 
-  Mic, 
-  Zap, 
-  Activity, 
-  Wand2, 
-  Megaphone,
   PlayCircle,
   ChevronDown
 } from "lucide-react";
 import { trackMetaEvent } from "../utils/trackEvent";
 
 const Courses = () => {
-  const [visibleCount, setVisibleCount] = useState(4); // Shuru mein sirf 4 courses dikhenge
+  const [visibleCount, setVisibleCount] = useState(8); // Start mein 8 courses dikhenge mobile aur laptop dono par
 
   const handleEnroll = () => {
     trackMetaEvent('InitiateCheckout', { content_name: `Bundle_All_13_Courses_499` });
@@ -35,36 +22,36 @@ const Courses = () => {
 
   const handleLoadMore = () => {
     const currentCount = visibleCount;
-    const nextCount = Math.min(visibleCount + 4, courseList.length);
+    // Baki bache hue courses load karne ke liye
+    const nextCount = Math.min(visibleCount + 8, courseList.length);
     
-    // Naye courses state me update karo
     setVisibleCount(nextCount);
 
     // DOM update hone ke baad automatically naye pehle course pe smooth scroll karo
     setTimeout(() => {
       const element = document.getElementById(`course-card-${currentCount}`);
       if (element) {
-        // Top se 120px ka offset rakha hai taaki navbar ke peeche na chhupe
         const y = element.getBoundingClientRect().top + window.scrollY - 120;
         window.scrollTo({ top: y, behavior: 'smooth' });
       }
     }, 150);
   };
 
+  // Tumhare diye gaye images 1 to 13 sequence mein lagaye gaye hain
   const courseList = [
-    { title: "Image to Video Generation", icon: Video, value: "₹2,499", gradient: "from-blue-600/30 to-blue-900/30", color: "text-blue-400" },
-    { title: "2D Animation Mastery", icon: PenTool, value: "₹1,999", gradient: "from-purple-600/30 to-purple-900/30", color: "text-purple-400" },
-    { title: "3D Animation Course", icon: Box, value: "₹2,999", gradient: "from-cyan-600/30 to-cyan-900/30", color: "text-cyan-400" },
-    { title: "Food AI Video Mastery", icon: Utensils, value: "₹1,499", gradient: "from-orange-600/30 to-orange-900/30", color: "text-orange-400" },
-    { title: "Cute AI Baby Dance Videos", icon: Heart, value: "₹1,999", gradient: "from-pink-600/30 to-pink-900/30", color: "text-pink-400" },
-    { title: "Mastery In AI Influencers", icon: Star, value: "₹3,499", gradient: "from-yellow-600/30 to-yellow-900/30", color: "text-yellow-400" },
-    { title: "Junk Food Video Course", icon: Coffee, value: "₹1,499", gradient: "from-amber-600/30 to-amber-900/30", color: "text-amber-400" },
-    { title: "AI Influencers Video Ads", icon: Camera, value: "₹2,499", gradient: "from-indigo-600/30 to-indigo-900/30", color: "text-indigo-400" },
-    { title: "Baby Podcast Video Course", icon: Mic, value: "₹1,999", gradient: "from-rose-600/30 to-rose-900/30", color: "text-rose-400" },
-    { title: "AI Motivational Videos", icon: Zap, value: "₹1,499", gradient: "from-yellow-500/30 to-orange-600/30", color: "text-yellow-300" },
-    { title: "Stickman Video Mastery", icon: Activity, value: "₹1,299", gradient: "from-emerald-600/30 to-emerald-900/30", color: "text-emerald-400" },
-    { title: "Anime Video Course Mastery", icon: Wand2, value: "₹2,499", gradient: "from-fuchsia-600/30 to-fuchsia-900/30", color: "text-fuchsia-400" },
-    { title: "Promotional Video For Business", icon: Megaphone, value: "₹3,999", gradient: "from-teal-600/30 to-teal-900/30", color: "text-teal-400" },
+    { title: "Image to Video Generation", value: "₹2,499", image: "https://ik.imagekit.io/0s0fb4b2b/1.webp" },
+    { title: "2D Animation Mastery", value: "₹1,999", image: "https://ik.imagekit.io/0s0fb4b2b/2.webp" },
+    { title: "3D Animation Course", value: "₹2,999", image: "https://ik.imagekit.io/0s0fb4b2b/3.webp" },
+    { title: "Mastery In AI Influencers", value: "₹3,499", image: "https://ik.imagekit.io/0s0fb4b2b/4.webp" },
+    { title: "AI Influencers Video Ads", value: "₹2,499", image: "https://ik.imagekit.io/0s0fb4b2b/5.webp" },
+    { title: "Cute AI Baby Dance Videos", value: "₹1,999", image: "https://ik.imagekit.io/0s0fb4b2b/6.webp" },
+    { title: "Food AI Video Mastery", value: "₹1,499", image: "https://ik.imagekit.io/0s0fb4b2b/7.webp" },
+    { title: "Baby Podcast Video Course", value: "₹1,999", image: "https://ik.imagekit.io/0s0fb4b2b/8.webp" },
+    { title: "AI Motivational Videos", value: "₹1,499", image: "https://ik.imagekit.io/0s0fb4b2b/9.webp" },
+    { title: "Stickman Video Mastery", value: "₹1,299", image: "https://ik.imagekit.io/0s0fb4b2b/10.webp" },
+    { title: "Anime Video Course Mastery", value: "₹2,499", image: "https://ik.imagekit.io/0s0fb4b2b/11.webp" },
+    { title: "Promotional Video For Business", value: "₹3,999", image: "https://ik.imagekit.io/0s0fb4b2b/12.webp" },
+    { title: "AI Influencers Video Ads", value: "₹2,499", image: "https://ik.imagekit.io/0s0fb4b2b/13.webp" },
   ];
 
   return (
@@ -98,13 +85,13 @@ const Courses = () => {
           </p>
         </motion.div>
 
-        {/* Courses Grid: Mobile 1 column, Tablet 2, Desktop 3 */}
+        {/* Courses Grid: Mobile 1 column, Tablet 2, Desktop 3, Wide 4 */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-5 mb-8 md:mb-10">
           <AnimatePresence>
             {courseList.slice(0, visibleCount).map((course, index) => (
               <motion.div
-                key={course.title}
-                id={`course-card-${index}`} // Auto-scroll ke liye specific ID assign ki
+                key={course.title + index}
+                id={`course-card-${index}`}
                 initial={{ opacity: 0, y: 20, scale: 0.95 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
@@ -112,20 +99,23 @@ const Courses = () => {
                 onClick={handleEnroll}
                 className="group flex flex-col bg-slate-900/60 border border-slate-800 rounded-2xl overflow-hidden hover:border-cyan-500/50 hover:shadow-[0_0_30px_rgba(6,182,212,0.15)] transition-all duration-300 cursor-pointer"
               >
-                {/* Compact Course Thumbnail */}
-                <div className={`relative h-28 md:h-36 bg-gradient-to-br ${course.gradient} flex items-center justify-center overflow-hidden border-b border-slate-800 group-hover:scale-105 transition-transform duration-500`}>
-                  <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay"></div>
+                {/* Image Thumbnail Area */}
+                <div className="relative w-full aspect-video bg-slate-900 overflow-hidden border-b border-slate-800">
+                  {/* Actual Course Image */}
+                  <img 
+                    src={course.image} 
+                    alt={course.title} 
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
+                  />
                   
-                  <course.icon className={`w-12 h-12 md:w-16 md:h-16 ${course.color} drop-shadow-xl relative z-10 group-hover:scale-110 transition-transform duration-300`} />
+                  {/* Subtle dark overlay that fades on hover */}
+                  <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-300 pointer-events-none" />
                   
-                  {/* Premium Badge */}
-                  <div className="absolute top-2.5 left-2.5 bg-black/60 backdrop-blur-sm border border-white/10 px-2 py-1 rounded-md flex items-center gap-1 z-10">
-                     <PlayCircle size={10} className="text-white" />
-                     <span className="text-[9px] md:text-[10px] font-bold text-white tracking-widest uppercase">Full Course</span>
-                  </div>
+                  
                 </div>
                 
-                {/* Course Details Area - Reduced Padding */}
+                {/* Course Details Area */}
                 <div className="p-4 md:p-5 flex flex-col flex-grow bg-slate-900">
                   <h3 className="text-base md:text-lg font-bold text-white mb-3 group-hover:text-cyan-400 transition-colors leading-snug">
                     {course.title}

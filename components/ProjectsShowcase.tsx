@@ -39,16 +39,16 @@ const ProjectsShowcase = () => {
   };
 
   const projects = [
-    { id: "DXv2fPvpa__", platform: "instagram", type: "AI Influencer Reel", icon: User, color: "from-cyan-400 to-blue-500", views: "1.2M" },
-    { id: "DUQojqujOJx", platform: "instagram", type: "Viral Dancing Baby", icon: Heart, color: "from-pink-400 to-rose-500", views: "850K" },
-    { id: "DUONAqlkm8S", platform: "instagram", type: "Talking Food Ad", icon: Coffee, color: "from-orange-400 to-amber-500", views: "2.1M" },
+    { id: "DXv2fPvpa__", platform: "instagram", type: "Talking Food Ad", icon: User, color: "from-cyan-400 to-blue-500", views: "1.2M" },
+    { id: "DUQojqujOJx", platform: "instagram", type: "AI Influncer", icon: Heart, color: "from-pink-400 to-rose-500", views: "850K" },
+    { id: "DUONAqlkm8S", platform: "instagram", type: "AI Influncer", icon: Coffee, color: "from-orange-400 to-amber-500", views: "2.1M" },
     { id: "DWYGeuFSZyo", platform: "instagram", type: "Cinematic Scene", icon: Film, color: "from-purple-400 to-indigo-500", views: "3.4M" },
-    { id: "DWTq1bDgsF-", platform: "instagram", type: "Motivational AI", icon: Zap, color: "from-yellow-400 to-orange-500", views: "920K" },
-    { id: "DTIhzsADAW9", platform: "instagram", type: "Anime Style Edit", icon: Wand2, color: "from-fuchsia-400 to-purple-500", views: "1.5M" },
-    { id: "4gHqVg8SY2M", platform: "youtube", type: "Business Promo Ad", icon: Megaphone, color: "from-teal-400 to-emerald-500", views: "500K" },
-    { id: "5toLxPmN3-4", platform: "youtube", type: "Baby Podcast", icon: Mic, color: "from-rose-400 to-red-500", views: "2.8M" },
-    { id: "DUmsnYPjDlN", platform: "instagram", type: "Stickman Animation", icon: Activity, color: "from-emerald-400 to-cyan-500", views: "1.1M" },
-    { id: "DX1HriPz62D", platform: "instagram", type: "Junk Food Viral Ad", icon: Utensils, color: "from-amber-400 to-orange-500", views: "4.2M" },
+    { id: "DWTq1bDgsF-", platform: "instagram", type: "Talking Baby", icon: Zap, color: "from-yellow-400 to-orange-500", views: "920K" },
+    { id: "DTIhzsADAW9", platform: "instagram", type: "AI Influncer", icon: Wand2, color: "from-fuchsia-400 to-purple-500", views: "1.5M" },
+    { id: "4gHqVg8SY2M", platform: "youtube", type: "Junk Food AI", icon: Megaphone, color: "from-teal-400 to-emerald-500", views: "500K" },
+    { id: "5toLxPmN3-4", platform: "youtube", type: "Cartoon Video", icon: Mic, color: "from-rose-400 to-red-500", views: "2.8M" },
+    { id: "DUmsnYPjDlN", platform: "instagram", type: "Junk Food Video", icon: Activity, color: "from-emerald-400 to-cyan-500", views: "1.1M" },
+    { id: "DX1HriPz62D", platform: "instagram", type: "Motivational Video", icon: Utensils, color: "from-amber-400 to-orange-500", views: "4.2M" },
   ];
 
   return (
