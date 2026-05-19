@@ -19,23 +19,21 @@ import {
 
 const ProjectsShowcase = () => {
 
+  // Saare naye YouTube Shorts IDs yahan update kar diye gaye hain
   const projects = [
-    { id: "DXv2fPvpa__", platform: "instagram", type: "Talking Food Ad", icon: User, color: "from-cyan-400 to-blue-500", views: "1.2M" },
-    { id: "DUQojqujOJx", platform: "instagram", type: "AI Influencer", icon: Heart, color: "from-pink-400 to-rose-500", views: "850K" },
-    { id: "DUONAqlkm8S", platform: "instagram", type: "AI Influencer", icon: Coffee, color: "from-orange-400 to-amber-500", views: "2.1M" },
-    { id: "DWYGeuFSZyo", platform: "instagram", type: "Cinematic Scene", icon: Film, color: "from-purple-400 to-indigo-500", views: "3.4M" },
-    { id: "DWTq1bDgsF-", platform: "instagram", type: "Talking Baby", icon: Zap, color: "from-yellow-400 to-orange-500", views: "920K" },
-    { id: "DTIhzsADAW9", platform: "instagram", type: "AI Influencer", icon: Wand2, color: "from-fuchsia-400 to-purple-500", views: "1.5M" },
-    { id: "4gHqVg8SY2M", platform: "youtube", type: "Junk Food AI", icon: Megaphone, color: "from-teal-400 to-emerald-500", views: "500K" },
-    { id: "5toLxPmN3-4", platform: "youtube", type: "Cartoon Video", icon: Mic, color: "from-rose-400 to-red-500", views: "2.8M" },
-    { id: "DUmsnYPjDlN", platform: "instagram", type: "Junk Food Video", icon: Activity, color: "from-emerald-400 to-cyan-500", views: "1.1M" },
-    { id: "DX1HriPz62D", platform: "instagram", type: "Motivational Video", icon: Utensils, color: "from-amber-400 to-orange-500", views: "4.2M" },
+    { id: "XIyhKJ53pPA", platform: "youtube", type: "AI Influencer", icon: User, color: "from-pink-400 to-rose-500", views: "1.2M" },
+    { id: "ur9wl8mtNpQ", platform: "youtube", type: "AI Influencer", icon: Heart, color: "from-purple-400 to-indigo-500", views: "850K" },
+    { id: "iH74797Fit0", platform: "youtube", type: "AI Influencer", icon: Wand2, color: "from-fuchsia-400 to-purple-500", views: "2.1M" },
+    { id: "kDYuTxKwKmo", platform: "youtube", type: "Talking Food Ad", icon: Utensils, color: "from-cyan-400 to-blue-500", views: "3.4M" },
+    { id: "KhimKZTIbVE", platform: "youtube", type: "Junk Food AI", icon: Coffee, color: "from-orange-400 to-amber-500", views: "920K" },
+    { id: "S-eplXgAA3A", platform: "youtube", type: "Talking Baby", icon: Zap, color: "from-yellow-400 to-orange-500", views: "1.5M" },
+    { id: "Pv3ulqvAfmg", platform: "youtube", type: "Cute Baby Dance", icon: Mic, color: "from-rose-400 to-red-500", views: "2.8M" },
+    { id: "eYYr8NWGDkU", platform: "youtube", type: "Spiritual AI", icon: Activity, color: "from-emerald-400 to-cyan-500", views: "1.1M" },
   ];
 
   return (
     <section
       id="projects"
-      // EXACTLY AS REQUESTED: Padding Reduce kardi Phone me 1/3 (py-8) aur Laptop me 1/2 (md:py-12)
       className="py-8 md:py-12 bg-black relative overflow-hidden"
     >
       {/* Premium Background Ambience */}
@@ -71,10 +69,9 @@ const ProjectsShowcase = () => {
         </motion.div>
 
         {/* ========================================================= */}
-        {/* RESPONSIVE GRID: Phone me 2 column, Laptop me 5 columns */}
-        {/* (10 videos hain toh 5 columns me perfect 2 rows banengi) */}
+        {/* RESPONSIVE GRID: Phone me 2 column, Laptop me 4 columns kyunki 8 videos hain */}
         {/* ========================================================= */}
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-6 mb-8 place-items-center">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 mb-8 place-items-center">
           {projects.map((project, index) => (
             <ProjectCard key={project.id} project={project} index={index} />
           ))}
@@ -87,9 +84,8 @@ const ProjectsShowcase = () => {
 
 // Extremely Beautiful & Custom Native Player Card
 const ProjectCard = ({ project, index }: { project: any; index: number }) => {
-  const embedUrl = project.platform === "instagram" 
-    ? `https://www.instagram.com/reel/${project.id}/embed/?hidecaption=true` 
-    : `https://www.youtube.com/embed/${project.id}?rel=0&modestbranding=1&controls=0&showinfo=0&playsinline=1`;
+  // YouTube embed URL optimized for shorts (controls=0 rakha hai taaki design premium lage, click karte hi play hoga)
+  const embedUrl = `https://www.youtube.com/embed/${project.id}?rel=0&modestbranding=1&controls=0&showinfo=0&playsinline=1`;
 
   return (
     <motion.div
@@ -97,19 +93,16 @@ const ProjectCard = ({ project, index }: { project: any; index: number }) => {
       initial={{ opacity: 0, scale: 0.9, y: 30 }}
       whileInView={{ opacity: 1, scale: 1, y: 0 }}
       viewport={{ once: true, margin: "-100px" }}
-      transition={{ duration: 0.5, delay: (index % 5) * 0.1 }}
-      // Phone par 2 grid hone ki wajah se styles responsive (chote) kiye gaye hain
+      transition={{ duration: 0.5, delay: (index % 4) * 0.1 }} // Adjusted delay for 4 cols
       className="relative w-full aspect-[9/16] bg-black border-[2px] md:border-[5px] border-[#121212] rounded-[1.25rem] md:rounded-[2.5rem] shadow-[0_10px_30px_rgba(0,0,0,0.8)] md:shadow-[0_20px_50px_rgba(0,0,0,0.8)] hover:shadow-[0_0_40px_rgba(6,182,212,0.2)] hover:border-[#1a1a1a] transition-all duration-500 group overflow-hidden ring-1 ring-white/5"
     >
       {/* Background neon glow behind the phone frame */}
       <div className={`absolute -inset-10 bg-gradient-to-r ${project.color} opacity-0 group-hover:opacity-20 blur-2xl md:blur-3xl -z-10 transition-opacity duration-700`} />
 
-      {/* ============================================================== */}
-      {/* CSS CROP TRICK: Hides Instagram Like/Comment buttons completely */}
-      {/* ============================================================== */}
       <div className="absolute inset-0 bg-[#0a0a0a] overflow-hidden rounded-[1rem] md:rounded-[2.2rem]">
+        {/* YouTube Iframe - Perfect Fit without the weird Instagram Crop */}
         <iframe
-          className={`absolute top-0 ${project.platform === 'instagram' ? '-left-[20%] w-[140%]' : 'left-0 w-full'} h-full`}
+          className="absolute top-0 left-0 w-full h-full"
           src={embedUrl}
           title={project.type}
           frameBorder="0"
@@ -132,7 +125,6 @@ const ProjectCard = ({ project, index }: { project: any; index: number }) => {
          <div className="flex items-center gap-1.5 md:gap-3">
             <div className={`w-6 h-6 md:w-10 md:h-10 rounded-full bg-gradient-to-br ${project.color} flex items-center justify-center shadow-lg p-[1px] md:p-[2px]`}>
                <div className="w-full h-full bg-black/50 rounded-full flex items-center justify-center backdrop-blur-sm">
-                  {/* Icon size responsive for phone/laptop */}
                   <project.icon className="w-3 h-3 md:w-4 md:h-4 text-white drop-shadow-md" />
                </div>
             </div>

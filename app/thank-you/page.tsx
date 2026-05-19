@@ -2,17 +2,16 @@
 
 import React, { useEffect } from "react";
 import { motion } from "framer-motion";
-import { CheckCircle, ArrowRight, Download, Mail, Star } from "lucide-react";
+import { CheckCircle, ArrowRight, Mail, Star, Clock, ExternalLink } from "lucide-react";
 import Link from "next/link";
 import { trackMetaEvent } from "../../utils/trackEvent";
 
 export default function ThankYouPage() {
-  // --- COURSE ACCESS LINK ---
-  const COURSE_LINK =
-    "https://drive.google.com/drive/folders/1VUSlhW3UxEaxObHHngHYheBQyhLTrhvf";
+  // --- NEW PORTAL LINK ---
+  const PORTAL_LINK = "https://www.impactschoolai.com/";
 
-  const handleAccessCourse = () => {
-    window.open(COURSE_LINK, "_blank");
+  const handleAccessPortal = () => {
+    window.open(PORTAL_LINK, "_blank");
   };
 
   useEffect(() => {
@@ -52,38 +51,44 @@ export default function ThankYouPage() {
 
         {/* Main Headings */}
         <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 tracking-tight">
-          Welcome to the Club! 🎉
+          Payment Successful! 🎉
         </h1>
         <p className="text-slate-300 text-lg mb-10 max-w-lg mx-auto leading-relaxed">
-          Your payment was successful. You've just taken the first step towards
-          mastering{" "}
+          Welcome to the club. You've just taken the first step towards mastering{" "}
           <span className="text-cyan-400 font-semibold">AI Filmmaking</span>.
         </p>
 
-        {/* --- ACTION CARD --- */}
+        {/* --- ACTION CARD (Updated for Signup Flow) --- */}
         <div className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 border border-slate-700 rounded-2xl p-6 mb-8 text-left relative overflow-hidden group">
           <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
             <Star size={100} />
           </div>
 
-          <h3 className="text-xl font-bold text-white mb-2 flex items-center gap-2">
-            Your Course is Ready 🚀
+          <h3 className="text-xl font-bold text-white mb-3 flex items-center gap-2">
+            Next Step: Claim Your Access 🚀
           </h3>
-          <p className="text-slate-400 text-sm mb-6">
-            Click the button below to access all course videos and resources
-            immediately via Google Drive.
+          <p className="text-slate-400 text-sm mb-4 leading-relaxed">
+            Click the button below to visit our official portal (<span className="text-cyan-400">impactschoolai.com</span>). Please <strong>Sign Up</strong> using the exact same email address you just used for this payment.
           </p>
 
+          {/* Alert Box for 2 Hours Notice */}
+          <div className="bg-cyan-500/10 border border-cyan-500/30 rounded-xl p-3.5 mb-6 flex items-start gap-3">
+            <Clock className="text-cyan-400 shrink-0 mt-0.5" size={18} />
+            <p className="text-cyan-200 text-sm font-medium">
+              After signing up, your account will be verified and course access will be granted within <strong className="text-white">2 Working Hours</strong>.
+            </p>
+          </div>
+
           <button
-            onClick={handleAccessCourse}
+            onClick={handleAccessPortal}
             className="w-full py-4 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-bold text-lg shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3 cursor-pointer"
           >
-            <Download size={20} /> Start Learning Now
+            Go To Portal & Sign Up <ExternalLink size={20} />
           </button>
 
           <div className="mt-4 flex items-center justify-center gap-2 text-xs text-slate-500 font-medium">
             <Mail size={12} />
-            <span>A copy has also been sent to your email.</span>
+            <span>Use your payment email to avoid delays.</span>
           </div>
         </div>
 

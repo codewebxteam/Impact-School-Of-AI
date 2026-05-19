@@ -28,10 +28,11 @@ const Testimonials = () => {
     }, 150);
   };
 
-  // MAKE SURE ye array update ho gaya hai tumhare code me
+  // Naye YouTube Shorts Add Kar Diye Gaye Hain (Insta wale hata diye taaki play hone me dikkat na ho)
   const testimonials = [
-    { id: "DTQQLVTDKz8", platform: "instagram", type: "First Viral Video", icon: User, color: "from-yellow-400 to-orange-500", views: "10K" },
-    { id: "DUUdDsvAQ-1", platform: "instagram", type: "Client Project", icon: Star, color: "from-amber-400 to-red-500", views: "50K" },
+    { id: "x8qi2YUoVNI", platform: "youtube", type: "AI Influencer", icon: User, color: "from-yellow-400 to-orange-500", views: "100K+" },
+    { id: "S-eplXgAA3A", platform: "youtube", type: "AI Influencer", icon: Star, color: "from-amber-400 to-red-500", views: "50K+" },
+    { id: "4gHqVg8SY2M", platform: "youtube", type: "AI Food Video", icon: Sparkles, color: "from-green-400 to-emerald-500", views: "250K+" },
   ];
 
   return (
@@ -116,11 +117,12 @@ const Testimonials = () => {
 
 // Extremely Beautiful & Custom Native Player Card for Testimonials
 const TestimonialCard = ({ item, index }: { item: any; index: number }) => {
+  // YouTube ke liye optimal parameters
   const embedUrl = item.platform === "instagram" 
     ? `https://www.instagram.com/reel/${item.id}/embed/?hidecaption=true` 
     : `https://www.youtube.com/embed/${item.id}?rel=0&modestbranding=1&controls=0&showinfo=0&playsinline=1`;
 
-  // FIX: Safely extracting the icon component to a Capitalized variable
+  // Safely extracting the icon component to a Capitalized variable
   const Icon = item.icon;
 
   return (
@@ -135,8 +137,9 @@ const TestimonialCard = ({ item, index }: { item: any; index: number }) => {
       <div className={`absolute -inset-10 bg-gradient-to-r ${item.color || 'from-yellow-400 to-orange-500'} opacity-0 group-hover:opacity-20 blur-3xl -z-10 transition-opacity duration-700`} />
 
       <div className="absolute inset-0 bg-[#0a0a0a] overflow-hidden rounded-[1.75rem] md:rounded-[2.2rem]">
+        {/* Iframe for smooth playback */}
         <iframe
-          className={`absolute top-0 ${item.platform === 'instagram' ? '-left-[20%] w-[140%]' : 'left-0 w-full'} h-full`}
+          className="absolute top-0 left-0 w-full h-full"
           src={embedUrl}
           title="Student Showcase"
           frameBorder="0"
@@ -152,7 +155,6 @@ const TestimonialCard = ({ item, index }: { item: any; index: number }) => {
          <div className="flex items-center gap-3">
             <div className={`w-8 h-8 md:w-10 md:h-10 rounded-full bg-gradient-to-br ${item.color || 'from-yellow-400 to-orange-500'} flex items-center justify-center shadow-lg p-[2px]`}>
                <div className="w-full h-full bg-black/50 rounded-full flex items-center justify-center backdrop-blur-sm">
-                  {/* FIX: Safety check before rendering the icon */}
                   {Icon ? <Icon size={16} className="text-white drop-shadow-md" /> : <Sparkles size={16} className="text-white" />}
                </div>
             </div>
