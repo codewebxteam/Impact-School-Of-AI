@@ -1,13 +1,20 @@
 'use client';
 
-import React, { useEffect } from "react";
+import React, { useEffect, Suspense } from "react";
 import { motion } from "framer-motion";
 import { CheckCircle, ArrowRight, Mail, Star, Clock, ExternalLink } from "lucide-react";
 import Link from "next/link";
+import { useSearchParams, useRouter } from "next/navigation";
 import { trackMetaEvent } from "../../utils/trackEvent";
 
-export default function ThankYouPage() {
-  // --- NEW PORTAL LINK ---
+// Main Content Component
+function ThankYouContent() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  
+  // Razorpay payment ke baad URL me ye ID bhejta hai
+  const paymentId = searchParams.get("razorpay_payment_id");
+
   const PORTAL_LINK = "https://www.impactschoolai.com/";
 
   const handleAccessPortal = () => {
@@ -15,9 +22,15 @@ export default function ThankYouPage() {
   };
 
   useEffect(() => {
-    console.log("Thank You Page Loaded");
+    // SECURITY CHECK: Agar URL me paymentId nahi hai (yani user ne direct URL type kiya hai)
+    if (!paymentId) {
+      router.replace("/"); // User ko turant wapas Home Page par dhakel do
+      return;
+    }
+
+    console.log("Valid Payment ID received:", paymentId);
     
-    // ✅ Next.js optimized Meta Purchase Tracking for ₹499
+    // ✅ Sirf valid payment par hi Meta Pixel ka Purchase event fire hoga!
     trackMetaEvent('Purchase', {
       value: 499.00,
       currency: "INR",
@@ -25,7 +38,12 @@ export default function ThankYouPage() {
       content_type: "product",
       content_ids: ["seekho_ai_course_001"],
     });
-  }, []);
+  }, [paymentId, router]);
+
+  // Agar payment ID nahi hai (redirect hone wala hai), toh UI mat dikhao taaki fake experience na mile
+  if (!paymentId) {
+    return null; 
+  }
 
   return (
     <div className="min-h-screen bg-black flex items-center justify-center relative overflow-hidden p-6 text-center font-sans selection:bg-cyan-500/30">
@@ -58,7 +76,7 @@ export default function ThankYouPage() {
           <span className="text-cyan-400 font-semibold">AI Filmmaking</span>.
         </p>
 
-        {/* --- ACTION CARD (Updated for Signup Flow) --- */}
+        {/* --- ACTION CARD --- */}
         <div className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 border border-slate-700 rounded-2xl p-6 mb-8 text-left relative overflow-hidden group">
           <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
             <Star size={100} />
@@ -95,8 +113,9 @@ export default function ThankYouPage() {
         {/* Order Details */}
         <div className="border-t border-slate-800 pt-6 flex flex-wrap justify-between items-center text-sm text-slate-500">
           <div className="flex flex-col text-left">
-            <span>Amount Paid</span>
-            <span className="text-white font-bold text-lg">₹499.00</span>
+            <span>Transaction ID</span>
+            {/* Yahan par actual payment ID dikha denge thoda aur authentic lagne ke liye */}
+            <span className="text-white font-bold text-xs uppercase">{paymentId}</span>
           </div>
           <div className="flex flex-col text-right">
             <span>Payment Status</span>
@@ -117,5 +136,14 @@ export default function ThankYouPage() {
         </div>
       </motion.div>
     </div>
+  );
+}
+
+// Next.js App Router me 'useSearchParams' use karne ke liye code ko <Suspense> me wrap karna padta hai
+export default function ThankYouPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-black flex items-center justify-center text-cyan-500 font-bold">Verifying Payment...</div>}>
+      <ThankYouContent />
+    </Suspense>
   );
 }
