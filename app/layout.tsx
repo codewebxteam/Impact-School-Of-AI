@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   // Yahan par humne Facebook domain verification add kiya hai
   verification: {
     other: {
-      "facebook-domain-verification": ["0uvc7s32w0r3fqhntr3sk5u9zpiegc"],
+      "facebook-domain-verification": ["mo2lbe9lnldwc2p1r5xjszp35hehpr"],
     },
   },
 };
