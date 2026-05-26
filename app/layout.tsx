@@ -9,6 +9,12 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Impact School Of AI",
   description: "Empowering India Through Skills",
+  // Yahan par humne Facebook domain verification add kiya hai
+  verification: {
+    other: {
+      "facebook-domain-verification": ["0uvc7s32w0r3fqhntr3sk5u9zpiegc"],
+    },
+  },
 };
 
 export default function RootLayout({
