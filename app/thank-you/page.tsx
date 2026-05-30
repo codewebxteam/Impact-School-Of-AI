@@ -7,46 +7,37 @@ import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { trackMetaEvent } from "../../utils/trackEvent";
 
-// Main Content Component
 function ThankYouContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   
-  // Status maintain karne ke liye (loading, authorized, unauthorized)
   const [status, setStatus] = useState<"loading" | "authorized" | "unauthorized">("loading");
-  const pixelFired = useRef(false); // Double fire rokne ke liye
+  const pixelFired = useRef(false); 
   
-  // Razorpay payment ke baad URL me ye ID bhejta hai
+  // Razorpay URL me payment ID append karta hai
   const paymentId = searchParams.get("razorpay_payment_id") || searchParams.get("payment_id");
-
   const PORTAL_LINK = "https://www.impactschoolai.com/";
 
-  const handleAccessPortal = () => {
-    window.open(PORTAL_LINK, "_blank");
-  };
-
   useEffect(() => {
-    // 1. Agar URL me payment ID nahi hai, toh fraud attempt hai, wapas Home par bhej do
+    // 1. Agar bina payment ID ke direct URL khola
     if (!paymentId) {
-      console.warn("Direct visit blocked. Redirecting to home...");
+      console.warn("Direct visit blocked.");
       router.replace("/");
       return;
     }
 
-    // 2. BACKEND API VERIFICATION CALL
+    // 2. SECURE BACKEND VERIFICATION
     const verifyWithServer = async () => {
       try {
-        // Ye API humare server (Next.js backend) par call jayegi
         const res = await fetch(`/api/verify-payment?payment_id=${paymentId}`);
         const data = await res.json();
 
         if (data.success) {
-          // PAYMENT 100% ASLI HAI!
+          // PAYMENT ASLI HAI - UI KHOLO AUR PIXEL FIRE KARO
           setStatus("authorized");
 
-          // Pixel sirf ek baar fire ho, isliye useRef ka use kiya gaya hai
           if (!pixelFired.current) {
-            console.log("Verified by Razorpay Server! Firing Meta Purchase event...");
+            console.log("Secure Verification Passed! Firing Meta Purchase event...");
             trackMetaEvent('Purchase', {
               value: 499.00,
               currency: "INR",
@@ -54,16 +45,14 @@ function ThankYouContent() {
               content_type: "product",
               content_ids: ["seekho_ai_course_001"],
             });
-            pixelFired.current = true;
+            pixelFired.current = true; // Taaki refresh par do baar fire na ho
           }
         } else {
-          // PAYMENT FAKE HAI YA FAILED HAI
-          console.warn("Fake or Failed Payment detected!");
+          // PAYMENT FAKE YA FAIL HAI
           setStatus("unauthorized");
           router.replace("/");
         }
       } catch (error) {
-        console.error("Verification failed", error);
         setStatus("unauthorized");
         router.replace("/");
       }
@@ -72,7 +61,7 @@ function ThankYouContent() {
     verifyWithServer();
   }, [paymentId, router]);
 
-  // Loading UI jab tak Razorpay server se jawab na aa jaye
+  // JAB TAK VERIFY HO RAHA HAI
   if (status === "loading") {
     return (
       <div className="min-h-screen bg-black flex flex-col items-center justify-center relative overflow-hidden">
@@ -83,14 +72,14 @@ function ThankYouContent() {
     );
   }
 
-  // Agar unauthorized hai, toh UI render mat karo kyunki wo home par redirect ho raha hoga
+  // AGAR VERIFY FAIL HUA (User redirect ho jayega)
   if (status === "unauthorized") {
     return null;
   }
 
+  // JAB VERIFY SUCCESS HO JAYE (Original UI)
   return (
     <div className="min-h-screen bg-black flex items-center justify-center relative overflow-hidden p-6 text-center font-sans selection:bg-cyan-500/30">
-      {/* Background Ambience */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-indigo-600/10 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-cyan-600/10 rounded-full blur-[120px] pointer-events-none" />
 
@@ -100,7 +89,6 @@ function ThankYouContent() {
         transition={{ duration: 0.6, ease: "easeOut" }}
         className="max-w-2xl w-full bg-slate-900/60 border border-slate-700/50 backdrop-blur-2xl rounded-3xl p-8 md:p-12 shadow-[0_0_50px_rgba(6,182,212,0.15)] relative z-10"
       >
-        {/* Success Icon Animation */}
         <motion.div
           initial={{ scale: 0, rotate: -180 }}
           animate={{ scale: 1, rotate: 0 }}
@@ -110,7 +98,6 @@ function ThankYouContent() {
           <CheckCircle className="text-white w-12 h-12" strokeWidth={3} />
         </motion.div>
 
-        {/* Main Headings */}
         <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 tracking-tight">
           Payment Successful! 🎉
         </h1>
@@ -119,7 +106,6 @@ function ThankYouContent() {
           <span className="text-cyan-400 font-semibold">AI Filmmaking</span>.
         </p>
 
-        {/* --- ACTION CARD --- */}
         <div className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 border border-slate-700 rounded-2xl p-6 mb-8 text-left relative overflow-hidden group">
           <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
             <Star size={100} />
@@ -132,7 +118,6 @@ function ThankYouContent() {
             Click the button below to visit our official portal (<span className="text-cyan-400">impactschoolai.com</span>). Please <strong>Sign Up</strong> using the exact same email address you just used for this payment.
           </p>
 
-          {/* Alert Box for 2 Hours Notice */}
           <div className="bg-cyan-500/10 border border-cyan-500/30 rounded-xl p-3.5 mb-6 flex items-start gap-3">
             <Clock className="text-cyan-400 shrink-0 mt-0.5" size={18} />
             <p className="text-cyan-200 text-sm font-medium">
@@ -141,7 +126,7 @@ function ThankYouContent() {
           </div>
 
           <button
-            onClick={handleAccessPortal}
+            onClick={() => window.open(PORTAL_LINK, "_blank")}
             className="w-full py-4 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-bold text-lg shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3 cursor-pointer"
           >
             Go To Portal & Sign Up <ExternalLink size={20} />
@@ -153,7 +138,6 @@ function ThankYouContent() {
           </div>
         </div>
 
-        {/* Order Details */}
         <div className="border-t border-slate-800 pt-6 flex flex-wrap justify-between items-center text-sm text-slate-500">
           <div className="flex flex-col text-left">
             <span>Transaction ID</span>
@@ -167,12 +151,8 @@ function ThankYouContent() {
           </div>
         </div>
 
-        {/* Back to Home Link */}
         <div className="mt-8">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 text-slate-500 hover:text-white transition-colors text-sm font-medium"
-          >
+          <Link href="/" className="inline-flex items-center gap-2 text-slate-500 hover:text-white transition-colors text-sm font-medium">
             <ArrowRight size={14} className="rotate-180" /> Back to Home
           </Link>
         </div>
@@ -181,7 +161,6 @@ function ThankYouContent() {
   );
 }
 
-// Next.js App Router me 'useSearchParams' use karne ke liye code ko <Suspense> me wrap karna padta hai
 export default function ThankYouPage() {
   return (
     <Suspense fallback={
