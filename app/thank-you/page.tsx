@@ -15,8 +15,8 @@ function ThankYouContent() {
   // Security ke liye ek state banayenge taaki jab tak verify na ho, UI na dikhe
   const [isAuthorized, setIsAuthorized] = useState(false);
   
-  // Razorpay payment ke baad URL me ye ID bhejta hai
-  const paymentId = searchParams.get("razorpay_payment_id");
+  // Razorpay payment ke baad URL me ye ID bhejta hai (Dono common variants cover kar liye hain)
+  const paymentId = searchParams.get("razorpay_payment_id") || searchParams.get("payment_id");
 
   const PORTAL_LINK = "https://www.impactschoolai.com/";
 
@@ -25,32 +25,37 @@ function ThankYouContent() {
   };
 
   useEffect(() => {
-    // 1. CHECK INTENT: Kya user sach me checkout button daba kar aaya hai?
-    const checkoutInitiated = sessionStorage.getItem("checkout_initiated");
-
-    // Agar session nahi mila YA url me razorpay ki ID nahi hai (Direct URL type kiya gaya hai)
-    if (!checkoutInitiated || !paymentId) {
+    // 1. UI PROTECTION: Agar URL me koi payment id nahi hai, toh wapas bhej do
+    if (!paymentId) {
       console.warn("Unauthorized access or direct visit. Redirecting to home...");
       router.replace("/");
       return;
     }
 
-    // 2. AUTHORIZED: User genuine hai, toh UI dikhao aur Meta Pixel fire karo
+    // 2. AUTHORIZED: Agar URL me ID hai, toh genuine buyer hai, Thank You UI hamesha dikhao
     setIsAuthorized(true);
-    console.log("Valid checkout session! Firing Meta Purchase event...");
-    
-    trackMetaEvent('Purchase', {
-      value: 499.00,
-      currency: "INR",
-      content_name: "AI Filmmaking Mastery Course",
-      content_type: "product",
-      content_ids: ["seekho_ai_course_001"],
-    });
 
-    // 3. CLEANUP: Event fire hone ke turant baad flag hata do.
-    // Is-se agar user page Refresh karega, toh wo wapas Home par chala jayega 
-    // aur Meta Ads me 2nd (duplicate) purchase record nahi hogi.
-    sessionStorage.removeItem("checkout_initiated");
+    // 3. PIXEL PROTECTION: Check karein ki user sach me checkout button daba kar aaya tha ya nahi
+    // ✅ FIX: sessionStorage ki jagah localStorage use kar rahe hain
+    const checkoutInitiated = localStorage.getItem("checkout_initiated");
+
+    if (checkoutInitiated === "true") {
+      console.log("Valid fresh purchase! Firing Meta Purchase event...");
+      
+      trackMetaEvent('Purchase', {
+        value: 499.00,
+        currency: "INR",
+        content_name: "AI Filmmaking Mastery Course",
+        content_type: "product",
+        content_ids: ["seekho_ai_course_001"],
+      });
+
+      // 4. CLEANUP: Event fire hone ke turant baad flag hata do.
+      // Is-se agar user page Refresh karega, toh Meta Ads me 2nd (duplicate) purchase record nahi hogi.
+      localStorage.removeItem("checkout_initiated");
+    } else {
+      console.log("Pixel already fired or page refreshed. Not firing again.");
+    }
 
   }, [paymentId, router]);
 
