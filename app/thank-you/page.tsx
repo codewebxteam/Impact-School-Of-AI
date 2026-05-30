@@ -1,18 +1,23 @@
 'use client';
 
-import React, { useEffect, Suspense } from "react";
+import React, { useEffect, useState, useRef, Suspense } from "react";
 import { motion } from "framer-motion";
 import { CheckCircle, ArrowRight, Mail, Star, Clock, ExternalLink } from "lucide-react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { trackMetaEvent } from "../../utils/trackEvent";
 
 // Main Content Component
 function ThankYouContent() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   
-  // URL se ID nikalenge, agar bina payment ke direct open kiya toh "PROCESSED_DIRECTLY" dikhayega
-  const paymentId = searchParams.get("razorpay_payment_id") || "PROCESSED_DIRECTLY";
+  // Status maintain karne ke liye (loading, authorized, unauthorized)
+  const [status, setStatus] = useState<"loading" | "authorized" | "unauthorized">("loading");
+  const pixelFired = useRef(false); // Double fire rokne ke liye
+  
+  // Razorpay payment ke baad URL me ye ID bhejta hai
+  const paymentId = searchParams.get("razorpay_payment_id") || searchParams.get("payment_id");
 
   const PORTAL_LINK = "https://www.impactschoolai.com/";
 
@@ -21,18 +26,67 @@ function ThankYouContent() {
   };
 
   useEffect(() => {
-    // ✅ Security check (redirect) hata diya gaya hai. 
-    // Jaise hi page load hoga, Meta Pixel ka Purchase event turant fire hoga!
-    console.log("Page loaded, firing Meta event...");
-    
-    trackMetaEvent('Purchase', {
-      value: 499.00,
-      currency: "INR",
-      content_name: "AI Filmmaking Mastery Course",
-      content_type: "product",
-      content_ids: ["seekho_ai_course_001"],
-    });
-  }, []); // Empty dependency array taaki mount hote hi ek baar fire ho
+    // 1. Agar URL me payment ID nahi hai, toh fraud attempt hai, wapas Home par bhej do
+    if (!paymentId) {
+      console.warn("Direct visit blocked. Redirecting to home...");
+      router.replace("/");
+      return;
+    }
+
+    // 2. BACKEND API VERIFICATION CALL
+    const verifyWithServer = async () => {
+      try {
+        // Ye API humare server (Next.js backend) par call jayegi
+        const res = await fetch(`/api/verify-payment?payment_id=${paymentId}`);
+        const data = await res.json();
+
+        if (data.success) {
+          // PAYMENT 100% ASLI HAI!
+          setStatus("authorized");
+
+          // Pixel sirf ek baar fire ho, isliye useRef ka use kiya gaya hai
+          if (!pixelFired.current) {
+            console.log("Verified by Razorpay Server! Firing Meta Purchase event...");
+            trackMetaEvent('Purchase', {
+              value: 499.00,
+              currency: "INR",
+              content_name: "AI Filmmaking Mastery Course",
+              content_type: "product",
+              content_ids: ["seekho_ai_course_001"],
+            });
+            pixelFired.current = true;
+          }
+        } else {
+          // PAYMENT FAKE HAI YA FAILED HAI
+          console.warn("Fake or Failed Payment detected!");
+          setStatus("unauthorized");
+          router.replace("/");
+        }
+      } catch (error) {
+        console.error("Verification failed", error);
+        setStatus("unauthorized");
+        router.replace("/");
+      }
+    };
+
+    verifyWithServer();
+  }, [paymentId, router]);
+
+  // Loading UI jab tak Razorpay server se jawab na aa jaye
+  if (status === "loading") {
+    return (
+      <div className="min-h-screen bg-black flex flex-col items-center justify-center relative overflow-hidden">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-indigo-600/10 rounded-full blur-[120px] pointer-events-none" />
+        <div className="w-12 h-12 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin mb-4 relative z-10"></div>
+        <p className="text-cyan-500 font-bold text-xl animate-pulse relative z-10">Verifying your payment securely...</p>
+      </div>
+    );
+  }
+
+  // Agar unauthorized hai, toh UI render mat karo kyunki wo home par redirect ho raha hoga
+  if (status === "unauthorized") {
+    return null;
+  }
 
   return (
     <div className="min-h-screen bg-black flex items-center justify-center relative overflow-hidden p-6 text-center font-sans selection:bg-cyan-500/30">
@@ -130,7 +184,12 @@ function ThankYouContent() {
 // Next.js App Router me 'useSearchParams' use karne ke liye code ko <Suspense> me wrap karna padta hai
 export default function ThankYouPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-black flex items-center justify-center text-cyan-500 font-bold">Loading...</div>}>
+    <Suspense fallback={
+      <div className="min-h-screen bg-black flex flex-col items-center justify-center">
+         <div className="w-12 h-12 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin mb-4"></div>
+         <p className="text-cyan-500 font-bold text-xl animate-pulse">Connecting to Secure Server...</p>
+      </div>
+    }>
       <ThankYouContent />
     </Suspense>
   );
