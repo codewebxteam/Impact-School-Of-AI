@@ -10,18 +10,68 @@ const Offer = () => {
   const [timeLeft, setTimeLeft] = useState({ days: 2, hours: 0, minutes: 0, seconds: 0 });
   const [isMounted, setIsMounted] = useState(false);
 
-  const handleEnroll = () => {
+  // 1. Razorpay Checkout SDK load karne ka function
+  const loadRazorpay = () => {
+    return new Promise((resolve) => {
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.body.appendChild(script);
+    });
+  };
+
+  const handleEnroll = async () => {
+    // Meta Pixel Initiate Checkout Track
     trackMetaEvent('InitiateCheckout', { 
       content_name: 'Offer_Section_Buy_1_Get_All_499',
       value: 499,
       currency: 'INR'
     });
-    // Yahan alert hata kar direct Razorpay ka link laga diya hai
-    window.location.href = "https://rzp.io/rzp/impactschool";
+
+    // 2. Load the SDK
+    const isLoaded = await loadRazorpay();
+    if (!isLoaded) {
+      alert("Razorpay failed to load. Please check your internet connection.");
+      return;
+    }
+
+    try {
+      // 3. Backend API call karke Naya Order Create karein
+      const response = await fetch("/api/create-order", { method: "POST" });
+      const data = await response.json();
+
+      if (!data.success) {
+        alert("Payment initialization failed! Please try again later.");
+        return;
+      }
+
+      // 4. Razorpay Popup Modal ke Options Set karein
+      const options = {
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, // Frontend Public Key
+        amount: data.order.amount,
+        currency: data.order.currency,
+        name: "Impact School of AI",
+        description: "AI Filmmaking Mastery Course",
+        order_id: data.order.id, // Backend se aayi hui ID
+        handler: function (response: any) {
+          // ✅ INSTANT AUTOMATIC REDIRECT TO THANK YOU PAGE ON SUCCESS
+          window.location.href = `/thank-you?payment_id=${response.razorpay_payment_id}`;
+        },
+        theme: { color: "#06b6d4" }, // Aapka Cyan theme color
+      };
+
+      // 5. Modal Open karein
+      const paymentObject = new (window as any).Razorpay(options);
+      paymentObject.open();
+
+    } catch (error) {
+      console.error("Payment popup error:", error);
+      alert("Something went wrong. Please try again.");
+    }
   };
 
   useEffect(() => {
-    // Ye code sirf browser mein chalega, isiliye yahan localStorage safe hai
     setIsMounted(true);
 
     const calculateTimeLeft = () => {
@@ -47,10 +97,8 @@ const Offer = () => {
       return { days: 2, hours: 0, minutes: 0, seconds: 0 };
     };
 
-    // Initial setup
     setTimeLeft(calculateTimeLeft());
 
-    // Timer interval
     const timer = setInterval(() => {
       setTimeLeft(calculateTimeLeft());
     }, 1000);
@@ -63,7 +111,6 @@ const Offer = () => {
   return (
     <section
       id="pricing-section" 
-      // Padding Reduce kardi: Phone me 1/3 (py-8) aur Laptop me 1/2 (md:py-14)
       className="py-8 md:py-14 bg-black relative overflow-hidden flex items-center justify-center"
     >
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-cyan-600/10 rounded-full blur-[120px] pointer-events-none animate-pulse" />
@@ -104,7 +151,6 @@ const Offer = () => {
             </div>
           </div>
 
-          {/* Hydration error aur Vercel error dono se bachne ke liye conditionally render timer */}
           <div className="flex justify-center gap-2 md:gap-6 mb-6 md:mb-8">
             {isMounted ? (
               <>

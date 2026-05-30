@@ -3,13 +3,26 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, Sparkles, CheckCircle2, PlayCircle } from "lucide-react";
-import { trackMetaEvent } from "../utils/trackEvent";
+// Agar aap custom event track karna chahein toh rakh sakte hain, warna iski zaroorat nahi hai.
 
 const Hero = () => {
-  const handleEnroll = () => {
-    trackMetaEvent('InitiateCheckout', { content_name: 'Hero_Buy_Any_499' });
-    // Yahan direct Razorpay ka payment link daal diya hai
-    window.location.href = "https://rzp.io/rzp/impactschool";
+  const handleEnroll = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    
+    // Smooth scroll to Pricing Section
+    const element = document.querySelector("#pricing-section");
+    if (element) {
+      const offset = 80; // Navbar ki height compensate karne ke liye
+      const bodyRect = document.body.getBoundingClientRect().top;
+      const elementRect = element.getBoundingClientRect().top;
+      const elementPosition = elementRect - bodyRect;
+      const offsetPosition = elementPosition - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth",
+      });
+    }
   };
 
   return (
