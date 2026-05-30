@@ -1,18 +1,22 @@
 'use client';
 
-import React, { useEffect, Suspense } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import { motion } from "framer-motion";
 import { CheckCircle, ArrowRight, Mail, Star, Clock, ExternalLink } from "lucide-react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { trackMetaEvent } from "../../utils/trackEvent";
 
 // Main Content Component
 function ThankYouContent() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   
-  // URL se ID nikalenge, agar bina payment ke direct open kiya toh "PROCESSED_DIRECTLY" dikhayega
-  const paymentId = searchParams.get("razorpay_payment_id") || "PROCESSED_DIRECTLY";
+  // Security ke liye ek state banayenge taaki jab tak verify na ho, UI na dikhe
+  const [isAuthorized, setIsAuthorized] = useState(false);
+  
+  // Razorpay payment ke baad URL me ye ID bhejta hai
+  const paymentId = searchParams.get("razorpay_payment_id");
 
   const PORTAL_LINK = "https://www.impactschoolai.com/";
 
@@ -21,9 +25,19 @@ function ThankYouContent() {
   };
 
   useEffect(() => {
-    // ✅ Security check (redirect) hata diya gaya hai. 
-    // Jaise hi page load hoga, Meta Pixel ka Purchase event turant fire hoga!
-    console.log("Page loaded, firing Meta event...");
+    // 1. CHECK INTENT: Kya user sach me checkout button daba kar aaya hai?
+    const checkoutInitiated = sessionStorage.getItem("checkout_initiated");
+
+    // Agar session nahi mila YA url me razorpay ki ID nahi hai (Direct URL type kiya gaya hai)
+    if (!checkoutInitiated || !paymentId) {
+      console.warn("Unauthorized access or direct visit. Redirecting to home...");
+      router.replace("/");
+      return;
+    }
+
+    // 2. AUTHORIZED: User genuine hai, toh UI dikhao aur Meta Pixel fire karo
+    setIsAuthorized(true);
+    console.log("Valid checkout session! Firing Meta Purchase event...");
     
     trackMetaEvent('Purchase', {
       value: 499.00,
@@ -32,7 +46,18 @@ function ThankYouContent() {
       content_type: "product",
       content_ids: ["seekho_ai_course_001"],
     });
-  }, []); // Empty dependency array taaki mount hote hi ek baar fire ho
+
+    // 3. CLEANUP: Event fire hone ke turant baad flag hata do.
+    // Is-se agar user page Refresh karega, toh wo wapas Home par chala jayega 
+    // aur Meta Ads me 2nd (duplicate) purchase record nahi hogi.
+    sessionStorage.removeItem("checkout_initiated");
+
+  }, [paymentId, router]);
+
+  // Jab tak validation chal raha hai ya agar user unauthorized hai, toh UI render mat karo
+  if (!isAuthorized) {
+    return null; 
+  }
 
   return (
     <div className="min-h-screen bg-black flex items-center justify-center relative overflow-hidden p-6 text-center font-sans selection:bg-cyan-500/30">
@@ -130,7 +155,7 @@ function ThankYouContent() {
 // Next.js App Router me 'useSearchParams' use karne ke liye code ko <Suspense> me wrap karna padta hai
 export default function ThankYouPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-black flex items-center justify-center text-cyan-500 font-bold">Loading...</div>}>
+    <Suspense fallback={<div className="min-h-screen bg-black flex items-center justify-center text-cyan-500 font-bold">Verifying Session...</div>}>
       <ThankYouContent />
     </Suspense>
   );

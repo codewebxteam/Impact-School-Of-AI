@@ -16,6 +16,12 @@ const Offer = () => {
       value: 499,
       currency: 'INR'
     });
+    
+    // ✅ NEW ADDITION: Hum ek flag save kar rahe hain ki user ne actually payment button click kiya hai.
+    // Kyunki aap external link (rzp.io) use kar rahe ho, yahan payment success verify nahi ho sakta, 
+    // par "checkout initiate" verify ho sakta hai.
+    sessionStorage.setItem("checkout_initiated", "true");
+
     // Yahan alert hata kar direct Razorpay ka link laga diya hai
     window.location.href = "https://rzp.io/rzp/impactschool";
   };

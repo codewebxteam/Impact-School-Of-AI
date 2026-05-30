@@ -4,7 +4,6 @@ import React, { useState, useEffect } from "react";
 import { Menu, X, Sparkles, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePathname, useRouter } from "next/navigation";
-import { trackMetaEvent } from "../utils/trackEvent";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -12,13 +11,6 @@ const Navbar = () => {
 
   const router = useRouter();
   const pathname = usePathname();
-
-  const handleEnroll = () => {
-    trackMetaEvent('InitiateCheckout', { content_name: 'Navbar_Buy_Any_499' });
-    // Yahan scrollIntoView hata kar seedha Razorpay ka link laga diya hai
-    window.location.href = "https://rzp.io/rzp/impactschool";
-    setIsOpen(false);
-  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -37,7 +29,8 @@ const Navbar = () => {
     { name: "FAQ", href: "#faq" },
   ];
 
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement | HTMLDivElement>, href: string) => {
+  // Type ko thoda generic banaya taaki anchor aur button dono isko use kar sakein
+  const handleNavClick = (e: React.MouseEvent<HTMLElement>, href: string) => {
     e.preventDefault();
     setIsOpen(false); 
 
@@ -60,7 +53,7 @@ const Navbar = () => {
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
     } else {
-      router.push("/");
+      router.push(`/${href}`);
     }
   };
 
@@ -75,7 +68,7 @@ const Navbar = () => {
       >
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
           <div
-            onClick={(e) => handleNavClick(e as any, "#home")}
+            onClick={(e) => handleNavClick(e, "#home")}
             className="flex items-center gap-2 cursor-pointer group select-none"
           >
             <div className="w-10 h-10 bg-gradient-to-tr from-cyan-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-cyan-500/20 group-hover:scale-110 transition-transform duration-300">
@@ -107,8 +100,9 @@ const Navbar = () => {
           </div>
 
           <div className="hidden lg:block">
+            {/* Direct Razorpay link ki jagah ab ye smooth scroll karke Offer section (#pricing-section) par le jayega */}
             <button
-              onClick={handleEnroll}
+              onClick={(e) => handleNavClick(e, "#pricing-section")}
               className="group px-6 py-2.5 rounded-full bg-white text-black font-bold text-sm hover:bg-cyan-50 hover:scale-105 transition-all shadow-[0_0_20px_rgba(255,255,255,0.2)] flex items-center gap-2 cursor-pointer uppercase tracking-wide"
             >
               Buy Any @ ₹499
@@ -156,8 +150,9 @@ const Navbar = () => {
 
               <div className="h-px bg-white/10 my-2" />
 
+              {/* Mobile me bhi same scroll behavior add kiya gaya hai */}
               <button
-                onClick={handleEnroll}
+                onClick={(e) => handleNavClick(e, "#pricing-section")}
                 className="w-full py-4 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-bold text-lg shadow-lg shadow-cyan-500/20 active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer uppercase tracking-wide"
               >
                 Buy Any @ ₹499
