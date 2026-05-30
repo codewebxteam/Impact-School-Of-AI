@@ -16,11 +16,6 @@ const Offer = () => {
       value: 499,
       currency: 'INR'
     });
-    
-    // ✅ FIX: sessionStorage ki jagah ab localStorage use kar rahe hain 
-    // Taaki external link (rzp.io) se wapas aane par browser isko delete na kare.
-    localStorage.setItem("checkout_initiated", "true");
-
     // Yahan alert hata kar direct Razorpay ka link laga diya hai
     window.location.href = "https://rzp.io/rzp/impactschool";
   };
