@@ -9,7 +9,7 @@ export async function POST() {
     });
 
     const options = {
-      amount: 1 * 100, // Amount paiso mein hota hai (499 INR * 100)
+      amount: 499 * 100, // Amount paiso mein hota hai (499 INR * 100)
       currency: "INR",
       receipt: "rcpt_" + Math.random().toString(36).substring(7),
     };
